@@ -64,7 +64,7 @@ export default {
       if (this.query === '') {
         return true
       }
-      return tokens.map(token => text.includes(token)).every(_ => _)
+      return tokens.map(_ => text.includes(_)).every(_ => _)
     }
   },
   components: {
