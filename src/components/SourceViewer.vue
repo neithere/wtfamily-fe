@@ -73,26 +73,22 @@ export default {
 }
 </script>
 
-<style>
-.source-reader {
-  overflow: hidden;
+<style lang="sass">
+.source-reader
+  overflow: hidden
 
-  .main-panel {
-    /*
-    float: right;
-    width: 70%;
-    */
-  }
-  .side-panel {
-    /*
-    float: left;
-    width: 30%;
-    */
+  .main-panel
+    // float: right;
+    // width: 70%;
 
-    .object-list {
-      height: 100%; 
-      overflow-y: scroll;
-    }
-  }
-}
+  .side-panel
+    // float: left;
+    // width: 30%;
+
+    .object-list
+      height: 100%
+      overflow-y: scroll
+
+      .list-group-item
+        cursor: pointer
 </style>
