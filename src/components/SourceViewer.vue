@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import _ from 'lodash'
 import Axios from 'axios'
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
@@ -48,10 +47,10 @@ export default {
   },
   computed: {
     selectedItem () {
-      if (_.isEmpty(this.selectedId)) {
+      if (this.selectedId === null) {
         return
       }
-      return _.find(this.object_list, {id: this.selectedId})
+      return this.object_list.find(_ => _.id === this.selectedId)
     }
   },
   methods: {
@@ -62,7 +61,10 @@ export default {
       var tokens = this.query.toLowerCase().split(' ')
       var text = item.title.toLowerCase()
 
-      return _.isEmpty(this.query) || _.every(_.map(tokens, (token) => _.includes(text, token)))
+      if (this.query === '') {
+        return true
+      }
+      return tokens.map(token => text.includes(token)).every(_ => _)
     }
   },
   components: {
