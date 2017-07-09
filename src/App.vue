@@ -4,7 +4,7 @@
       <nav class="navbar navbar-inverse navbar-static-top">
         <div class="container-fluid">
          <div class="navbar-header">
-           <router-link class="navbar-brand" :to="{name: 'home'}">Home</router-link>
+           <router-link class="navbar-brand" :to="{name: 'home'}">WhatTheFamily</router-link>
          </div>
          <div class="collapse navbar-collapse">
            <ul class="nav navbar-nav">
@@ -43,6 +43,14 @@ export default {
 }
 </script>
 
-<style>
-@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
+<style lang="sass">
+@import '../node_modules/bootstrap/dist/css/bootstrap.min.css'
+@import url('https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700|Kurale|Lobster')
+
+h1,
+.navbar-brand
+  font-family: Lobster, sans-serif
+
+h2
+  font-family: Kurale, serif
 </style>

@@ -1,8 +1,17 @@
 <template>
   <panel-viewer :source-url="sourceUrl" @selected="selectedItem = $event">
     <div v-if="selectedItem">
-      <h1>{{selectedItem.title}}</h1>
-      {{selectedItem.pubinfo}}
+      <h2>{{selectedItem.title}}</h2>
+      <dl class="dl-horizontal">
+        <dt>Author</dt>
+        <dd>{{selectedItem.author}}</dd>
+        <dt>Publication info</dt>
+        <dd>{{selectedItem.pubinfo}}</dd>
+        <dt>Abbrev</dt>
+        <dd>{{selectedItem.abbrev}}</dd>
+        <dt>Repository (ID)</dt>
+        <dd>{{selectedItem.repository}}</dd>
+      </dl>
     </div>
   </panel-viewer>
 </template>

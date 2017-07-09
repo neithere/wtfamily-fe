@@ -4,7 +4,7 @@
       <div v-if="!object_list.length">
         <pulse-loader></pulse-loader>
       </div>
-      <div v-if="object_list.length" class="object-list">
+      <div v-if="object_list.length">
         <p><input v-model="query" name="query" placeholder="Filter items"></p>
         <ul class="list-group">
           <li v-for="item in object_list" v-if="matchesQuery(item)"
@@ -39,7 +39,7 @@ export default {
     }
   },
   created () {
-    Axios.get(this.sourceUrl).then((items) => {
+    Axios.get(this.sourceUrl).then(items => {
       this.object_list = items.data
     })
   },
@@ -85,8 +85,9 @@ export default {
     // float: left;
     // width: 30%;
 
-    .object-list
-      height: 100%
+    .list-group
+      height: 80vh
+      overflow: hidden
       overflow-y: scroll
 
       .list-group-item
