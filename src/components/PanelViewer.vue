@@ -9,7 +9,7 @@
         <ul class="list-group">
           <li v-for="item in object_list" v-if="matchesQuery(item)"
             @click="selectItem(item.id)"
-            track-by="id"
+            :key="item.id"
             :class="{'list-group-item': true, active: item.id === selectedId}">
             {{item.title}}
           </li>
