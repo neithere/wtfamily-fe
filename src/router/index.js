@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
+import SourceViewer from '@/components/SourceViewer.vue'
 
 Vue.use(Router)
 
@@ -9,12 +10,14 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home  // require('@/components/Home.vue')
+      // require('@/components/Home.vue')
+      component: Home
     },
     {
       path: '/sources',
       name: 'source.list',
-      component: require('@/components/SourceViewer.vue')
+      // component: require('@/components/SourceViewer.vue')
+      component: SourceViewer
     },
     {
       path: '/people',

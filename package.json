@@ -15,8 +15,8 @@
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap": "^4.0.0",
+    "font-awesome": "^4.7.0",
     "node-sass": "^4.7.2",
-    "popper": "^1.0.1",
     "sass-loader": "^6.0.7",
     "vue": "^2.5.2",
     "vue-router": "^3.0.1",

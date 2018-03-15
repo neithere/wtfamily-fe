@@ -1,23 +1,22 @@
 <template>
   <panel-viewer :source-url="sourceUrl" @selected="selectedItem = $event">
     <div v-if="selectedItem">
-      <h2>{{selectedItem.title}}</h2>
-      <dl class="dl-horizontal">
-        <dt>Author</dt>
-        <dd>{{selectedItem.author}}</dd>
-        <dt>Publication info</dt>
-        <dd>{{selectedItem.pubinfo}}</dd>
-        <dt>Abbrev</dt>
-        <dd>{{selectedItem.abbrev}}</dd>
-        <dt>Repository (ID)</dt>
-        <dd>{{selectedItem.repository}}</dd>
-      </dl>
+      <h2><span class="fas fa-book"></span> {{selectedItem.title}}</h2>
+
+      <term label="Author" :value="selectedItem.author" />
+      <term label="Pub info" :value="selectedItem.pubinfo" />
+      <term label="Abbrev" :value="selectedItem.abbrev" />
+      <term label="Repo ID" :value="selectedItem.repository" />
+
+      <citation-list :source-id="selectedItem.id" />
     </div>
   </panel-viewer>
 </template>
 
 <script>
 import PanelViewer from './PanelViewer'
+import CitationList from './CitationList'
+import Term from './Term'
 
 const SOURCE_URL = 'http://localhost:5000/r/sources/'
 
@@ -30,27 +29,9 @@ export default {
     }
   },
   components: {
-    PanelViewer
+    PanelViewer,
+    CitationList,
+    Term
   }
 }
 </script>
-
-<style lang="sass">
-.source-reader
-  overflow: hidden
-
-  .main-panel
-    // float: right;
-    // width: 70%;
-
-  .side-panel
-    // float: left;
-    // width: 30%;
-
-    .object-list
-      height: 100%
-      overflow-y: scroll
-
-      .list-group-item
-        cursor: pointer
-</style>

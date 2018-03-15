@@ -39,8 +39,8 @@ export default {
     }
   },
   created () {
-    Axios.get(this.sourceUrl).then(items => {
-      this.object_list = items.data
+    Axios.get(this.sourceUrl).then(resp => {
+      this.object_list = resp.data
     })
   },
   computed: {
@@ -73,9 +73,10 @@ export default {
 }
 </script>
 
-<style lang="sass">
+<style lang="sass" scoped>
 .panel-viewer
   overflow: hidden
+  display: flex
 
   .main-panel
     // float: right;
