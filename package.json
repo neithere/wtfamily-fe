@@ -18,9 +18,11 @@
     "font-awesome": "^4.7.0",
     "node-sass": "^4.7.2",
     "sass-loader": "^6.0.7",
+    "typeface-kurale": "^0.0.54",
+    "typeface-lobster": "^0.0.54",
     "vue": "^2.5.2",
-    "vue-router": "^3.0.1",
-    "vue-spinner": "^1.0.3"
+    "vue-popperjs": "^1.2.6",
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

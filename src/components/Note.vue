@@ -1,7 +1,7 @@
 <template>
   <div class="note" :title="id">
     <!--span class="fas fa-quote-left"></span-->
-    <p class="note-text" :title="type">{{ text }}</p>
+    <p class="note-text" v-if="text" :title="type">{{ text }}</p>
     <!--span class="fas fa-quote-right"></span-->
     {{ media }}
   </div>
@@ -9,6 +9,8 @@
 
 <script>
 import Axios from 'axios'
+
+const BASE_URL = 'http://localhost:5000/r/notes/'
 
 export default {
   props: {
@@ -22,7 +24,7 @@ export default {
     }
   },
   created () {
-    const url = 'http://localhost:5000/r/notes/' + this.id
+    const url = BASE_URL + this.id
 
     if (!this.id) {
       return
@@ -40,5 +42,6 @@ export default {
 <style lang="sass" scoped>
 .note
   &-text
-      white-space: pre-wrap
+    white-space: pre-wrap
+    font-family: Kurale, serif
 </style>

@@ -13,6 +13,8 @@ import Axios from 'axios'
 
 import Citation from './Citation'
 
+const URL_TEMPLATE = 'http://localhost:5000/r/citations/?source='
+
 export default {
   props: {
     sourceId: {type: String, required: true}
@@ -24,7 +26,7 @@ export default {
   },
   methods: {
     fetchData () {
-      const url = 'http://localhost:5000/r/citations/?source=' + this.sourceId
+      const url = URL_TEMPLATE + this.sourceId
 
       Axios.get(url).then(resp => {
         this.object_list = resp.data

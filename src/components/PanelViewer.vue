@@ -2,10 +2,13 @@
   <div class="panel-viewer">
     <div class="side-panel col-md-4">
       <div v-if="!object_list.length">
-        <pulse-loader></pulse-loader>
+        <span class="fas fa-circle-notch fa-spin fa-5x"></span>
       </div>
       <div v-if="object_list.length">
-        <p><input v-model="query" name="query" placeholder="Filter items"></p>
+        <p>
+          <input v-model="query" type="search" class="query" name="query"
+            placeholder="Filter items">
+        </p>
         <ul class="list-group">
           <li v-for="item in object_list" v-if="matchesQuery(item)"
             @click="selectItem(item.id)"
@@ -24,7 +27,6 @@
 
 <script>
 import Axios from 'axios'
-import PulseLoader from 'vue-spinner/src/PulseLoader.vue'
 
 export default {
   name: 'panel-viewer',
@@ -68,7 +70,6 @@ export default {
     }
   },
   components: {
-    PulseLoader
   }
 }
 </script>
@@ -93,4 +94,7 @@ export default {
 
       .list-group-item
         cursor: pointer
+
+.query
+  width: 100%
 </style>

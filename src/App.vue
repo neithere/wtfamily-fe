@@ -47,7 +47,14 @@ export default {
 </script>
 
 <style lang="sass">
-@import 'bootstrap/dist/css/bootstrap.min.css'
+// override Bootstrap's var with Ubuntu + orig value
+$font-family-sans-serif: Ubuntu, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+@import '~bootstrap/scss/bootstrap.scss'
+
+// Cyrillic is not included in those,
+//   see https://github.com/KyleAMathews/typefaces/issues/21
+// @import 'typeface-kurale/index.css'
+// @import 'typeface-lobster/index.css'
 @import url('https://fonts.googleapis.com/css?family=Ubuntu:400,400i,700|Kurale|Lobster')
 
 /* FIXME this doesn't assign the font to the elem for some reason;
