@@ -11,6 +11,7 @@
           person.death }} (age ≈{{ person.age }})</h6>
         <p class="card-text">
           <span v-for="name in person.names" :key="name"
+            v-if="person.names.length > 1"
             class="item">{{ name }}</span>
         </p>
         <!--

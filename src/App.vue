@@ -49,6 +49,7 @@ export default {
 <style lang="sass">
 // override Bootstrap's var with Ubuntu + orig value
 $font-family-sans-serif: Ubuntu, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+$primary: #666666  // use gray instead of bright blue for active items
 @import '~bootstrap/scss/bootstrap.scss'
 
 // Cyrillic is not included in those,

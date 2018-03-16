@@ -1,56 +1,64 @@
 <template>
   <div class="panel-viewer">
     <div class="side-panel col-md-4">
-      <div v-if="!object_list.length">
+      <div v-if="!objectList.length">
         <span class="fas fa-circle-notch fa-spin fa-5x"></span>
       </div>
-      <div v-if="object_list.length">
+      <div v-if="objectList.length">
         <p>
           <input v-model="query" type="search" class="query" name="query"
             placeholder="Filter items">
         </p>
         <ul class="list-group">
-          <li v-for="item in object_list" v-if="matchesQuery(item)"
+          <li v-for="item in sortedObjectList" v-if="matchesQuery(item)"
             @click="selectItem(item.id)"
             :key="item.id"
             :class="{'list-group-item': true, active: item.id === selectedId}">
-            {{item.title}}
+            {{ item[titleAttr] }}
           </li>
         </ul>
       </div>
     </div>
     <div class="main-panel col-md-8">
-      <slot></slot>
+      <slot :items="sortedObjectList"></slot>
     </div>
   </div>
 </template>
 
 <script>
+import { sortBy } from 'lodash'
 import Axios from 'axios'
 
 export default {
   name: 'panel-viewer',
   props: {
-    sourceUrl: String
+    sourceUrl: String,
+    titleAttr: {
+      type: String,
+      default: 'title'
+    }
   },
   data () {
     return {
       selectedId: null,
-      object_list: [],
+      objectList: [],
       query: ''
     }
   },
   created () {
     Axios.get(this.sourceUrl).then(resp => {
-      this.object_list = resp.data
+      this.objectList = resp.data
     })
   },
   computed: {
+    sortedObjectList () {
+      return sortBy(this.objectList, this.titleAttr)
+    },
     selectedItem () {
       if (this.selectedId === null) {
         return
       }
-      return this.object_list.find(_ => _.id === this.selectedId)
+      return this.objectList.find(_ => _.id === this.selectedId)
     }
   },
   methods: {
@@ -60,8 +68,10 @@ export default {
       this.$emit('selected', this.selectedItem)
     },
     matchesQuery (item) {
-      var tokens = this.query.toLowerCase().split(' ')
-      var text = item.title.toLowerCase()
+      var query = this.query || ''
+      var title = item[this.titleAttr] || ''
+      var tokens = query.toLowerCase().split(' ')
+      var text = title.toLowerCase()
 
       if (this.query === '') {
         return true

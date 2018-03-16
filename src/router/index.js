@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
 import SourceViewer from '@/components/SourceViewer.vue'
+import PlaceViewer from '@/components/PlaceViewer.vue'
 
 Vue.use(Router)
 
@@ -28,8 +29,8 @@ export default new Router({
     {
       path: '/places',
       name: 'place.list',
-      component: { template: '<div>Not implemented.</div>' }
-      // component: require('./components/PlaceViewer.vue')
+      // component: require('../components/PlaceViewer.vue')
+      component: PlaceViewer
     }
   ]
 })
