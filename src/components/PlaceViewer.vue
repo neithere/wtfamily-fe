@@ -22,7 +22,7 @@
         :position="item.coords"
         :clickable="true"
         :title="item.name"
-        :label="showMarkerLabels ? item.name : ''"
+        :label="showMarkerLabels ? item.name : makeNameAbbr(item.name)"
         :opacity="selectedItem === item ? 1 : .7"
         @click="selectedItem = item" />
 
@@ -98,6 +98,16 @@ export default {
     selectItem (item) {
       this.selectedItem = item
       this.mapCenter = item.coords
+    },
+    makeNameAbbr (name) {
+      let words = name.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '')
+        .replace(/\s{2,}/g, ' ')
+        .split(' ')
+
+      if (words.length > 1) {
+        name = words.map(_ => _[0]).join('')
+      }
+      return name.slice(0, 3)
     }
   },
   components: {
