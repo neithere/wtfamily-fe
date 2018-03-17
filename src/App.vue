@@ -9,21 +9,24 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
           <ul class="navbar-nav mr-auto">
-            <li class="nav-item active">  <!-- FIXME use class from router-link? but how? -->
-              <router-link class="nav-link" :to="{name: 'source.list'}">
+            <router-link tag="li" class="nav-item" active-class="active"
+              :to="{name: 'source.list'}">
+              <a class="nav-link">
                 <span class="fas fa-book"></span> Sources
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" :to="{name: 'person.list'}">
+              </a>
+            </router-link>
+            <router-link tag="li" class="nav-item" active-class="active"
+              :to="{name: 'person.list'}">
+              <a class="nav-link">
                 <span class="fas fa-users"></span> People
-              </router-link>
-            </li>
-            <li class="nav-item">
-              <router-link class="nav-link" :to="{name: 'place.list'}">
+              </a>
+            </router-link>
+            <router-link tag="li" class="nav-item" active-class="active"
+              :to="{name: 'place.list'}">
+              <a class="nav-link">
                 <span class="fas fa-globe"></span> Places
-              </router-link>
-            </li>
+              </a>
+            </router-link>
           </ul>
           <span class="navbar-text">
             <!-- Navbar text with an inline element -->
