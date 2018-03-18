@@ -1,16 +1,15 @@
 <template>
   <panel-viewer
     :source-url="sourceUrl"
+    :selected-id="id"
     title-attr="name"
     @selected="selectItem($event)">
-
   <template slot-scope="panel">
-
     <input type="checkbox" id="show_marker_labels" v-model="showMarkerLabels">
     <label for="show_marker_labels">Show marker labels</label>
 
     <gmap-map
-      :center="selectedItem && selectedItem.coords ? selectedItem.coords : defaultCoords"
+      :center="panel.selectedItem && panel.selectedItem.coords || defaultCoords"
       :zoom="10"
       style="width: 100%; height: 50vh;">
 
@@ -23,16 +22,17 @@
         :clickable="true"
         :title="item.name"
         :label="showMarkerLabels ? item.name : makeNameAbbr(item.name)"
-        :opacity="selectedItem === item ? 1 : .7"
-        @click="selectedItem = item" />
+        :opacity="panel.selectedItem === item ? 1 : .7"
+        @click="selectItem(item)" />
 
     </gmap-map>
 
-    <div v-if="selectedItem">
+    <div v-if="panel.selectedItem">
       <h2>
-        <span class="fas fa-map-marker-alt"></span> {{ selectedItem.name }}
-        <small class="text-muted">
-          {{ selectedItem.coords.lat }} {{ selectedItem.coords.lng }}
+        <span class="fas fa-map-marker-alt"></span> {{ panel.selectedItem.name }}
+        <small class="text-muted" v-if="panel.selectedItem.coords">
+          {{ panel.selectedItem.coords.lat }}
+          {{ panel.selectedItem.coords.lng }}
         </small>
       </h2>
 
@@ -42,23 +42,23 @@
         breadcrumbs here.
       -->
       <place-item
-        v-if="selectedItem.parent_place_ids"
-        v-for="placeId in selectedItem.parent_place_ids"
+        v-if="panel.selectedItem.parent_place_ids"
+        v-for="placeId in panel.selectedItem.parent_place_ids"
         :key="placeId"
         :id="placeId" />
 
-      <term label="Other names" :value="selectedItem.other_names.join('; ')" />
+      <term label="Other names"
+        :value="formatMultiNames(panel.selectedItem.other_names)" />
       <!--
       <term label="Pub info" :value="selectedItem.pubinfo" />
       <term label="Abbrev" :value="selectedItem.abbrev" />
       <term label="Repo ID" :value="selectedItem.repository" />
       -->
 
-      {{ selectedItem }}
 
       <event-table
-        v-if="selectedItem"
-        :place-id="selectedItem.id"
+        v-if="panel.selectedItem"
+        :place-id="panel.selectedItem.id"
         no-place
         no-header />
     </div>
@@ -69,11 +69,14 @@
 <script>
 import * as VueGoogleMaps from 'vue2-google-maps'
 import Vue from 'vue'
+import Router from 'vue-router'
 
 import PanelViewer from './PanelViewer'
 import PlaceItem from './PlaceItem'
 import EventTable from './EventTable'
 import Term from './Term'
+
+Vue.use(Router)
 
 const SOURCE_URL = 'http://localhost:5000/r/places/'
 const GOOGLE_MAPS_API_TOKEN = 'AIzaSyCJkmtBCYVPX9ImKuKdREI35RNDwPjfEQo'
@@ -86,17 +89,22 @@ Vue.use(VueGoogleMaps, {
 
 export default {
   name: 'source-reader',
+  props: {
+    id: String
+  },
   data () {
     return {
       defaultCoords: {lat: 0, lng: 0},
       sourceUrl: SOURCE_URL,
-      selectedItem: null,
       showMarkerLabels: false
     }
   },
   methods: {
+    formatMultiNames (value) {
+      return value ? value.join('; ') : null
+    },
     selectItem (item) {
-      this.selectedItem = item
+      this.$router.push({name: 'place.detail', params: {id: item.id}})
       this.mapCenter = item.coords
     },
     makeNameAbbr (name) {

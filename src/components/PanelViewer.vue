@@ -11,7 +11,7 @@
         </p>
         <ul class="list-group">
           <li v-for="item in sortedObjectList" v-if="matchesQuery(item)"
-            @click="selectItem(item.id)"
+            @click="publishSelectedItem(item)"
             :key="item.id"
             :class="{'list-group-item': true, active: item.id === selectedId}">
             {{ item[titleAttr] }}
@@ -20,7 +20,10 @@
       </div>
     </div>
     <div class="main-panel col-md-8">
-      <slot :items="sortedObjectList"></slot>
+      <slot
+        :items="sortedObjectList"
+        :selected-item="selectedItem">
+      </slot>
     </div>
   </div>
 </template>
@@ -33,6 +36,7 @@ export default {
   name: 'panel-viewer',
   props: {
     sourceUrl: String,
+    selectedId: String,
     titleAttr: {
       type: String,
       default: 'title'
@@ -40,7 +44,6 @@ export default {
   },
   data () {
     return {
-      selectedId: null,
       objectList: [],
       query: ''
     }
@@ -62,10 +65,8 @@ export default {
     }
   },
   methods: {
-    selectItem (id) {
-      this.selectedId = id
-
-      this.$emit('selected', this.selectedItem)
+    publishSelectedItem (item) {
+      this.$emit('selected', item)
     },
     matchesQuery (item) {
       var query = this.query || ''
@@ -77,6 +78,10 @@ export default {
         return true
       }
       return tokens.map(_ => text.includes(_)).every(_ => _)
+    },
+  },
+  watch: {
+      this.publishSelectedItem(this.selectedItem)
     }
   },
   components: {
@@ -98,7 +103,7 @@ export default {
     // width: 30%;
 
     .list-group
-      height: 80vh
+      max-height: 83vh
       overflow: hidden
       overflow-y: scroll
 
