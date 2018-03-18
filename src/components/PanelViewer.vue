@@ -32,6 +32,8 @@
 import { sortBy } from 'lodash'
 import Axios from 'axios'
 
+const OTHER_NAMES_ATTR = 'other_names'
+
 export default {
   name: 'panel-viewer',
   props: {
@@ -71,8 +73,9 @@ export default {
     matchesQuery (item) {
       var query = this.query || ''
       var title = item[this.titleAttr] || ''
+      var otherNames = item[OTHER_NAMES_ATTR] || ''
       var tokens = query.toLowerCase().split(' ')
-      var text = title.toLowerCase()
+      var text = `${title} ${otherNames}`.toLowerCase()
 
       if (this.query === '') {
         return true
