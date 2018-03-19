@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Home from '@/components/Home'
 import SourceViewer from '@/components/SourceViewer.vue'
 import PlaceViewer from '@/components/PlaceViewer.vue'
+import PersonViewer from '@/components/PersonViewer.vue'
 
 Vue.use(Router)
 
@@ -28,7 +29,14 @@ const ROUTES_PEOPLE = [
   {
     path: '/people',
     name: 'person.list',
-    component: { template: '<div>Not implemented.</div>' }
+    component: PersonViewer,
+    props: true
+  },
+  {
+    path: '/people/:id',
+    name: 'person.detail',
+    component: PersonViewer,
+    props: true
   }
 ]
 

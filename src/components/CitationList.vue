@@ -24,9 +24,16 @@ export default {
       object_list: null
     }
   },
+  created () {
+    this.fetchData()
+  },
   methods: {
     fetchData () {
       const url = URL_TEMPLATE + this.sourceId
+
+      if (!this.sourceId) {
+        return
+      }
 
       Axios.get(url).then(resp => {
         this.object_list = resp.data

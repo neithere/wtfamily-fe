@@ -18,9 +18,17 @@
           </td>
           <td scope="col">{{ event.type }}</td>
           <td scope="col">
-            <person-list :event-id="event.id" />
+            <person-list :event-id="event.id" :exclude-person-id="excludePersonId" />
           </td>
-          <td scope="col" class="cell-summary">{{ event.summary }}</td>
+          <td scope="col" class="cell-summary">
+            <p class="small">{{ event.summary }}</p>
+            <p v-if="!noCitations && event.citation_ids"
+              v-for="citationId in event.citation_ids"
+              :key="citationId">
+              <citation-item
+                :id="citationId" />
+            </p>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -36,20 +44,27 @@ import Axios from 'axios'
 
 import PersonList from './PersonList'
 import PlaceItem from './PlaceItem'
+import CitationItem from './CitationItem'
 
+const EVENTS_BY_IDS_URL = 'http://localhost:5000/r/events/?ids='
 const EVENTS_BY_CITATION_URL = 'http://localhost:5000/r/events/?proven_by='
 const EVENTS_BY_PLACE_URL = 'http://localhost:5000/r/events/?place_id='
 
 export default {
   props: {
     // data source
+    ids: Array,
     placeId: String,
     citationId: String,
+    personId: String,
+    // NOTE: adding something here? update `watch`, too.
 
     // display settings
     noHeader: Boolean,
     noPlace: Boolean,
-    showId: Boolean
+    noCitations: Boolean,
+    showId: Boolean,
+    excludePersonId: String
   },
   data () {
     return {
@@ -70,10 +85,13 @@ export default {
       }
 
       Axios.get(url).then(resp => {
-        this.object_list = sortBy(resp.data, 'date')
+        this.object_list = sortBy(resp.data, 'date_year')
       })
     },
     getURL () {
+      if (this.ids) {
+        return EVENTS_BY_IDS_URL + this.ids.join(',')
+      }
       if (this.placeId) {
         return EVENTS_BY_PLACE_URL + this.placeId
       }
@@ -83,6 +101,9 @@ export default {
     }
   },
   watch: {
+    ids () {
+      this.fetchData()
+    },
     placeId () {
       this.fetchData()
     },
@@ -92,7 +113,8 @@ export default {
   },
   components: {
     PersonList,
-    PlaceItem
+    PlaceItem,
+    CitationItem
   }
 }
 </script>

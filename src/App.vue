@@ -37,9 +37,11 @@
     <article>
       <router-view></router-view>
     </article>
+    <!--
     <footer>
       (this is footer)
     </footer>
+    -->
   </div>
 </template>
 

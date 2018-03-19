@@ -10,9 +10,9 @@
         <h6 class="card-subtitle text-muted">TODO: parent places: {{ parent_place_ids }}</h6>
         <p class="card-text">
           AKA:
-          <span v-if="other_names"
-            v-for="name in other_names" :key="name"
-            class="item">{{ name }}</span>
+          <span v-if="otherNames"
+            v-for="(otherName, index) in otherNames" :key="index"
+            class="item">{{ otherName }}</span>
         </p>
         <p class="card-text">
           TODO: show map
@@ -23,7 +23,9 @@
 
     <abbr title="" slot="reference">
       <span class="fas fa-map-marker-alt"></span>
-      {{ name }}
+      <router-link :to="{name: 'place.detail', params: {id: id}}">
+        {{ name }}
+      </router-link>
     </abbr>
 
   </popper>
@@ -35,6 +37,8 @@ import Popper from 'vue-popperjs'
 import 'vue-popperjs/dist/css/vue-popper.css'
 
 const BASE_URL = 'http://localhost:5000/r/places/'
+
+const unique = (xs) => new Set([...xs])
 
 export default {
   props: {
@@ -56,15 +60,18 @@ export default {
   created () {
     this.fetchData()
   },
+  computed: {
+    otherNames () {
+      return this.other_names ? unique(this.other_names) : null
+    }
+  },
   methods: {
     fetchData () {
       const url = BASE_URL + this.id
 
       Axios.get(url).then(resp => {
-        console.log(resp)
         Object.keys(resp.data).forEach(k => {
           this[k] = resp.data[k]
-          console.log(k, this[k])
         })
       })
     }

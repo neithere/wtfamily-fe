@@ -1,5 +1,5 @@
 <template>
-  <popper trigger="click" :options="{placement: 'top-start'}">
+  <popper trigger="hover" :options="{placement: 'top-start'}">
 
     <div class="popper card">
       <div class="card-body">
@@ -10,8 +10,8 @@
         <h6 class="card-subtitle text-muted">{{ person.birth }} — {{
           person.death }} (age ≈{{ person.age }})</h6>
         <p class="card-text">
-          <span v-for="name in person.names" :key="name"
-            v-if="person.names.length > 1"
+          <span v-for="(name, index) in names" :key="index"
+            v-if="names.length > 1"
             class="item">{{ name }}</span>
         </p>
         <!--
@@ -23,7 +23,9 @@
 
     <abbr title="" slot="reference">
       <span :class="genderIconClasses"></span>
-      {{ person.name }} ({{ person.birth }})
+      <router-link :to="{name: 'person.detail', params: {id: person.id}}">
+        {{ person.name }} ({{ person.birth }})
+      </router-link>
     </abbr>
 
   </popper>
@@ -33,11 +35,14 @@
 import Popper from 'vue-popperjs'
 import 'vue-popperjs/dist/css/vue-popper.css'
 
+// FIXME duplicated vs PersonViewer
 const DEFAULT_ICON_NAME = 'fa-user'
 const GENDER_TO_ICON_NAME = {
   M: 'fa-male',
   F: 'fa-female'
 }
+
+const unique = (xs) => new Set([...xs])
 
 export default {
   props: {
@@ -52,6 +57,9 @@ export default {
     }
   },
   computed: {
+    names () {
+      return unique(this.person.names)
+    },
     genderIconClasses () {
       let gender = this.person.gender
       let iconName = GENDER_TO_ICON_NAME[gender] || DEFAULT_ICON_NAME
@@ -73,6 +81,7 @@ export default {
   .item + .item:before
     content: "; "
 
+  // FIXME: gender classes are duplicated vs PersonViewer
   .fa-male
     color: #003399
 

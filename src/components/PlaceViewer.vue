@@ -4,65 +4,64 @@
     :selected-id="id"
     title-attr="name"
     @selected="selectItem($event)">
-  <template slot-scope="panel">
-    <input type="checkbox" id="show_marker_labels" v-model="showMarkerLabels">
-    <label for="show_marker_labels">Show marker labels</label>
+    <template slot-scope="panel">
+      <input type="checkbox" id="show_marker_labels" v-model="showMarkerLabels">
+      <label for="show_marker_labels">Show marker labels</label>
 
-    <gmap-map
-      :center="panel.selectedItem && panel.selectedItem.coords || defaultCoords"
-      :zoom="10"
-      style="width: 100%; height: 50vh;">
+      <gmap-map
+        :center="panel.selectedItem && panel.selectedItem.coords || defaultCoords"
+        :zoom="10"
+        style="width: 100%; height: 50vh;">
 
-      <!-- TODO: use sortedObjectList from PanelViewer -->
-      <gmap-marker
-        :key="index"
-        v-for="(item, index) in panel.items"
-        v-if="item.coords"
-        :position="item.coords"
-        :clickable="true"
-        :title="item.name"
-        :label="showMarkerLabels ? item.name : makeNameAbbr(item.name)"
-        :opacity="panel.selectedItem === item ? 1 : .7"
-        @click="selectItem(item)" />
+        <!-- TODO: use sortedObjectList from PanelViewer -->
+        <gmap-marker
+          :key="index"
+          v-for="(item, index) in panel.items"
+          v-if="item.coords"
+          :position="item.coords"
+          :clickable="true"
+          :title="item.name"
+          :label="showMarkerLabels ? item.name : makeNameAbbr(item.name)"
+          :opacity="panel.selectedItem === item ? 1 : .7"
+          @click="selectItem(item)" />
 
-    </gmap-map>
+      </gmap-map>
 
-    <div v-if="panel.selectedItem">
-      <h2>
-        <span class="fas fa-map-marker-alt"></span> {{ panel.selectedItem.name }}
-        <small class="text-muted" v-if="panel.selectedItem.coords">
-          {{ panel.selectedItem.coords.lat }}
-          {{ panel.selectedItem.coords.lng }}
-        </small>
-      </h2>
+      <div v-if="panel.selectedItem">
+        <h2>
+          <span class="fas fa-map-marker-alt"></span> {{ panel.selectedItem.name }}
+          <small class="text-muted" v-if="panel.selectedItem.coords">
+            {{ panel.selectedItem.coords.lat }}
+            {{ panel.selectedItem.coords.lng }}
+          </small>
+        </h2>
 
-      <!-- NOTE
-        these are *direct* parents; yes, there can be multiple such places,
-        e.g. historically волость → район.  We do *not* show the full
-        breadcrumbs here.
-      -->
-      <place-item
-        v-if="panel.selectedItem.parent_place_ids"
-        v-for="placeId in panel.selectedItem.parent_place_ids"
-        :key="placeId"
-        :id="placeId" />
+        <!-- NOTE
+          these are *direct* parents; yes, there can be multiple such places,
+          e.g. historically волость → район.  We do *not* show the full
+          breadcrumbs here.
+        -->
+        <place-item
+          v-if="panel.selectedItem.parent_place_ids"
+          v-for="placeId in panel.selectedItem.parent_place_ids"
+          :key="placeId"
+          :id="placeId" />
 
-      <term label="Other names"
-        :value="formatMultiNames(panel.selectedItem.other_names)" />
-      <!--
-      <term label="Pub info" :value="selectedItem.pubinfo" />
-      <term label="Abbrev" :value="selectedItem.abbrev" />
-      <term label="Repo ID" :value="selectedItem.repository" />
-      -->
+        <term label="Other names"
+          :value="formatMultiNames(panel.selectedItem.other_names)" />
+        <!--
+        <term label="Pub info" :value="selectedItem.pubinfo" />
+        <term label="Abbrev" :value="selectedItem.abbrev" />
+        <term label="Repo ID" :value="selectedItem.repository" />
+        -->
 
-
-      <event-table
-        v-if="panel.selectedItem"
-        :place-id="panel.selectedItem.id"
-        no-place
-        no-header />
-    </div>
-  </template>
+        <event-table
+          v-if="panel.selectedItem"
+          :place-id="panel.selectedItem.id"
+          no-place
+          no-header />
+      </div>
+    </template>
   </panel-viewer>
 </template>
 
@@ -88,7 +87,7 @@ Vue.use(VueGoogleMaps, {
 })
 
 export default {
-  name: 'source-reader',
+  name: 'source-viewer',
   props: {
     id: String
   },
@@ -100,12 +99,16 @@ export default {
     }
   },
   methods: {
+    selectItem (item) {
+      this.$router.push({
+        name: 'place.detail',
+        params: {id: item.id}
+      })
+      this.mapCenter = item.coords
+    },
+    // FIXME: duplicate vs PlaceViewer
     formatMultiNames (value) {
       return value ? value.join('; ') : null
-    },
-    selectItem (item) {
-      this.$router.push({name: 'place.detail', params: {id: item.id}})
-      this.mapCenter = item.coords
     },
     makeNameAbbr (name) {
       let words = name.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '')

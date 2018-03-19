@@ -2,7 +2,9 @@
   <ul class="list-inline">
     <li v-for="person in object_list" :key="person.id"
       class="list-inline-item">
-      <person-list-item :person-data="person" />
+      <person-list-item
+        v-if="person.id !== excludePersonId"
+        :person-data="person" />
     </li>
   </ul>
 </template>
@@ -19,7 +21,8 @@ export default {
     eventId: {
       type: String,
       required: true
-    }
+    },
+    excludePersonId: String
   },
   data () {
     return {
