@@ -1,9 +1,9 @@
 <template>
   <popper trigger="hover" :options="{placement: 'top-start'}">
-    <div class="popper card" style="text-align: left;">
+    <div class="popper card debug-card">
       <pre><slot /></pre>
     </div>
-    <abbr title="" class="text-muted" slot="reference">[view JSON]</abbr>
+    <abbr title="" class="text-muted debug-label" slot="reference">[view JSON]</abbr>
   </popper>
 </template>
 
@@ -16,3 +16,12 @@ export default {
   }
 }
 </script>
+
+<style lang="sass" scoped>
+.debug
+  &-card
+    text-align: left
+
+  &-label
+    background: #ffffcc
+</style>

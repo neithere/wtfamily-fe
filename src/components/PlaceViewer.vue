@@ -76,6 +76,7 @@ import PanelViewer from './PanelViewer'
 import PlaceItem from './PlaceItem'
 import EventTable from './EventTable'
 import Term from './Term'
+import DebugJson from './DebugJson'
 
 Vue.use(Router)
 
@@ -127,7 +128,8 @@ export default {
     PanelViewer,
     PlaceItem,
     EventTable,
-    Term
+    Term,
+    DebugJson
   }
 }
 </script>

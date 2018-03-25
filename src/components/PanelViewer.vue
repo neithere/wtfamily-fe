@@ -54,9 +54,24 @@ export default {
     }
   },
   created () {
-    Axios.get(this.sourceUrl).then(resp => {
-      this.objectList = resp.data
-    })
+    let maybeFetchOne = id => {
+      let objectURL = this.sourceUrl + id
+
+      if (!id) {
+        return Promise.resolve(true)
+      }
+
+      return Axios.get(objectURL).then(resp => {
+        this.objectList = [resp.data]
+      })
+    }
+    let fetchAll = () => {
+      Axios.get(this.sourceUrl).then(resp => {
+        this.objectList = resp.data
+      })
+    }
+
+    return maybeFetchOne(this.selectedId).then(fetchAll)
   },
   computed: {
     sortedObjectList () {
