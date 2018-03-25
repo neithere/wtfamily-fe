@@ -4,7 +4,7 @@
       :key="citation.id"
       :id="citation.id"
       :page="citation.page"
-      :noteIds="citation.note_ids" />
+      :note-ids="citation.note_ids" />
   </div>
 </template>
 
@@ -13,11 +13,14 @@ import Axios from 'axios'
 
 import Citation from './Citation'
 
-const URL_TEMPLATE = 'http://localhost:5000/r/citations/?source='
+const BASE_URL_BY_SOURCE = 'http://localhost:5000/r/citations/?source='
 
 export default {
   props: {
-    sourceId: {type: String, required: true}
+    sourceId: {
+      type: String,
+      required: true
+    }
   },
   data () {
     return {
@@ -29,7 +32,7 @@ export default {
   },
   methods: {
     fetchData () {
-      const url = URL_TEMPLATE + this.sourceId
+      const url = BASE_URL_BY_SOURCE + this.sourceId
 
       if (!this.sourceId) {
         return

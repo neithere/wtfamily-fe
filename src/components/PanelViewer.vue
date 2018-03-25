@@ -1,6 +1,6 @@
 <template>
   <div class="panel-viewer">
-    <div class="side-panel col-md-4">
+    <div class="side-panel" :class="sidePanelGridClass">
       <div v-if="!objectList.length">
         <span class="fas fa-circle-notch fa-spin fa-5x"></span>
       </div>
@@ -19,7 +19,7 @@
         </ul>
       </div>
     </div>
-    <div class="main-panel col-md-8">
+    <div class="main-panel container-fluid" :class="mainPanelGridClass">
       <slot
         :items="sortedObjectList"
         :selected-item="selectedItem">
@@ -44,7 +44,8 @@ export default {
     otherNamesAttr: {
       type: String,
       default: 'other_names'
-    }
+    },
+    wideSidePanel: Boolean
   },
   data () {
     return {
@@ -66,6 +67,12 @@ export default {
         return
       }
       return this.objectList.find(_ => _.id === this.selectedId)
+    },
+    mainPanelGridClass () {
+      return this.wideSidePanel ? 'col-md-9' : 'col-md-10'
+    },
+    sidePanelGridClass () {
+      return this.wideSidePanel ? 'col-md-3' : 'col-md-2'
     }
   },
   methods: {

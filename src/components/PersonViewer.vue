@@ -6,7 +6,9 @@
     other-names-attr="names"
     @selected="selectItem($event)">
     <template slot-scope="panel">
-      {{ panel.selectedItem }}
+
+      <debug-json>{{ panel.selectedItem }}</debug-json>
+
       <div v-if="panel.selectedItem">
         <h2>
           <span :class="genderIconClasses(panel.selectedItem)"></span>
@@ -31,23 +33,25 @@
         <term label="Repo ID" :value="panel.selectedItem.repository" />
         -->
 
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">
-              <span class="fas fa-child"></span>
-              Child in family
-            </h5>
-            {{ panel.selectedItem.child_in_families }}
+        <div class="row">
+          <div class="col-6">
+            <family-card v-for="familyId in panel.selectedItem.child_in_families"
+              header="Child in family"
+              icon-class="fas fa-child"
+              :central-person-id="panel.selectedItem.id"
+              :mention-partners="panel.selectedItem.child_in_families.length > 1"
+              :key="familyId"
+              :id="familyId" />
           </div>
-        </div>
 
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">
-              <span class="fas fa-users"></span>
-              Family
-            </h5>
-            {{ panel.selectedItem.parent_in_families }}
+          <div class="col-6">
+            <family-card v-for="familyId in panel.selectedItem.parent_in_families"
+              header="Own family"
+              icon-class="fas fa-users"
+              :central-person-id="panel.selectedItem.id"
+              :mention-partners="panel.selectedItem.parent_in_families.length > 1"
+              :key="familyId"
+              :id="familyId" />
           </div>
         </div>
 
@@ -65,8 +69,10 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import PanelViewer from './PanelViewer'
+import FamilyCard from './FamilyCard'
 import EventTable from './EventTable'
 import Term from './Term'
+import DebugJson from './DebugJson'
 
 Vue.use(Router)
 
@@ -101,7 +107,7 @@ export default {
     },
     // FIXME: duplicate vs PlaceViewer
     formatMultiNames (value) {
-      return value ? value.join('; ') : null
+      return value ? value.join(' / ') : null
     },
     genderIconClasses (person) {
       let gender = person.gender
@@ -112,8 +118,10 @@ export default {
   },
   components: {
     PanelViewer,
+    FamilyCard,
     EventTable,
-    Term
+    Term,
+    DebugJson
   }
 }
 </script>

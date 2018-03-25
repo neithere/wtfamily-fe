@@ -14,7 +14,7 @@
         :key="noteId"
         :id="noteId" />
     </div>
-    <event-table :citationId="id" no-header>
+    <event-table :citation-id="id" no-header>
       <div slot="no-data" class="alert alert-info">
         <strong>Missing inferred facts.</strong>
         This citation may need some research.

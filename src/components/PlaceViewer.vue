@@ -55,6 +55,8 @@
         <term label="Repo ID" :value="selectedItem.repository" />
         -->
 
+        <debug-json>{{ panel.selectedItem }}</debug-json>
+
         <event-table
           v-if="panel.selectedItem"
           :place-id="panel.selectedItem.id"
@@ -108,7 +110,7 @@ export default {
     },
     // FIXME: duplicate vs PlaceViewer
     formatMultiNames (value) {
-      return value ? value.join('; ') : null
+      return value ? value.join(' / ') : null
     },
     makeNameAbbr (name) {
       let words = name.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '')

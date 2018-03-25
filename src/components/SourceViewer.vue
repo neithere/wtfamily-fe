@@ -1,5 +1,5 @@
 <template>
-  <panel-viewer
+  <panel-viewer wide-side-panel
     :source-url="sourceUrl"
     :selected-id="id"
     @selected="selectItem($event)">

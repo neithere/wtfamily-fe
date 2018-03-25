@@ -9,6 +9,7 @@
         </h5>
         <h6 v-if="source" class="card-subtitle text-muted">{{ source.title }}</h6>
         <p class="card-text"
+          style="text-align: left;"
           v-if="notes"
           v-for="(note, index) in notes"
           :key="index">
@@ -24,7 +25,7 @@
         <router-link
           :to="{name: 'source.detail', params: {id: sourceId}}"
           :title="source.title">
-          {{ source.abbrev }}
+          {{ source.abbrev }},
           {{ page }}
         </router-link>
       </template>

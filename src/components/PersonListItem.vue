@@ -1,7 +1,7 @@
 <template>
   <popper trigger="hover" :options="{placement: 'top-start'}">
 
-    <div class="popper card">
+    <div class="popper">  <!-- "card" makes items jump due to flex? -->
       <div class="card-body">
         <h5 class="card-title">
           <span :class="genderIconClasses"></span>
@@ -10,9 +10,9 @@
         <h6 class="card-subtitle text-muted">{{ person.birth }} — {{
           person.death }} (age ≈{{ person.age }})</h6>
         <p class="card-text">
-          <span v-for="(name, index) in names" :key="index"
+          <span v-for="(altName, index) in names" :key="index"
             v-if="names.length > 1"
-            class="item">{{ name }}</span>
+            class="item">{{ altName }}</span>
         </p>
         <!--
         <a href="#" class="card-link">view card</a>
@@ -24,7 +24,7 @@
     <abbr title="" slot="reference">
       <span :class="genderIconClasses"></span>
       <router-link :to="{name: 'person.detail', params: {id: person.id}}">
-        {{ person.name }} ({{ person.birth }})
+        {{ name }} ({{ person.birth }})
       </router-link>
     </abbr>
 
@@ -48,8 +48,9 @@ export default {
   props: {
     personData: {
       type: Object
-    }
+    },
     // id: {type: String, required: true},
+    noPatronymic: Boolean
   },
   data () {
     return {
@@ -57,6 +58,12 @@ export default {
     }
   },
   computed: {
+    name () {
+      if (this.noPatronymic) {
+        return this.person.first_and_last_names
+      }
+      return this.person.name
+    },
     names () {
       return unique(this.person.names)
     },
