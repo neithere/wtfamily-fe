@@ -46,9 +46,9 @@
 import { sortBy } from 'lodash'
 import Axios from 'axios'
 
-import PersonList from './PersonList'
-import PlaceItem from './PlaceItem'
-import CitationItem from './CitationItem'
+import PersonList from '../people/PersonList'
+import PlaceItem from '../places/PlaceItem'
+import CitationItem from '../sources/CitationItem'
 
 const EVENTS_BY_IDS_URL = 'http://localhost:5000/r/events/?ids='
 const EVENTS_BY_CITATION_URL = 'http://localhost:5000/r/events/?proven_by='

@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '@/components/Home'
-import SourceViewer from '@/components/SourceViewer.vue'
-import PlaceViewer from '@/components/PlaceViewer.vue'
-import PersonViewer from '@/components/PersonViewer.vue'
+import SourceViewer from '@/components/sources/SourceViewer.vue'
+import PlaceViewer from '@/components/places/PlaceViewer.vue'
+import PersonViewer from '@/components/people/PersonViewer.vue'
 
 Vue.use(Router)
 

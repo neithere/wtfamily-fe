@@ -72,11 +72,11 @@ import * as VueGoogleMaps from 'vue2-google-maps'
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import PanelViewer from './PanelViewer'
+import PanelViewer from '../common/PanelViewer'
+import Term from '../common/Term'
+import DebugJson from '../common/DebugJson'
 import PlaceItem from './PlaceItem'
-import EventTable from './EventTable'
-import Term from './Term'
-import DebugJson from './DebugJson'
+import EventTable from '../events/EventTable'
 
 Vue.use(Router)
 

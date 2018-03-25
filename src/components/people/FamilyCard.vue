@@ -40,10 +40,10 @@
 // import { sortBy } from 'lodash'
 import Axios from 'axios'
 
+import DebugJson from '../common/DebugJson'
+import EventTable from '../events/EventTable'
+import CitationItem from '../sources/CitationItem'
 import PersonList from './PersonList'
-import CitationItem from './CitationItem'
-import EventTable from './EventTable'
-import DebugJson from './DebugJson'
 
 const BASE_URL = 'http://localhost:5000/r/families/'
 

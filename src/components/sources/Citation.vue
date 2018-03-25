@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import EventTable from './EventTable'
+import EventTable from '../events/EventTable'
 import Note from './Note'
 
 export default {

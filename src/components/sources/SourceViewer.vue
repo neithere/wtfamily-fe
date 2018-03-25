@@ -23,9 +23,9 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import PanelViewer from './PanelViewer'
+import PanelViewer from '../common/PanelViewer'
+import Term from '../common/Term'
 import CitationList from './CitationList'
-import Term from './Term'
 
 Vue.use(Router)
 
