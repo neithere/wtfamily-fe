@@ -43,16 +43,11 @@
 </template>
 
 <script>
-import { sortBy } from 'lodash'
-import Axios from 'axios'
+import Event from '../../models/Event'
 
 import PersonList from '../people/PersonList'
 import PlaceItem from '../places/PlaceItem'
 import CitationItem from '../sources/CitationItem'
-
-const EVENTS_BY_IDS_URL = 'http://localhost:5000/r/events/?ids='
-const EVENTS_BY_CITATION_URL = 'http://localhost:5000/r/events/?proven_by='
-const EVENTS_BY_PLACE_URL = 'http://localhost:5000/r/events/?place_id='
 
 export default {
   props: {
@@ -80,28 +75,29 @@ export default {
   },
   methods: {
     fetchData () {
-      const url = this.getURL()
-      console.log({url})
-
-      if (!url) {
-        console.error('No specific URL could be generated')
-        return
-      }
-
-      Axios.get(url).then(resp => {
-        this.object_list = sortBy(resp.data, 'date_year')
-      })
+      this._fetchData()
+        .catch(err => console.error(err))
+        .then(data => {
+          this.object_list = data
+        })
     },
-    getURL () {
+    _fetchData () {
       if (this.ids) {
-        return EVENTS_BY_IDS_URL + this.ids.join(',')
+        return Event.findByIds(this.ids)
       }
       if (this.placeId) {
-        return EVENTS_BY_PLACE_URL + this.placeId
+        return Event.findByPlace(this.placeId)
       }
       if (this.citationId) {
-        return EVENTS_BY_CITATION_URL + this.citationId
+        return Event.findByCitation(this.citationId)
       }
+      /* NOTE: apparently this is not supported by backend
+      if (this.personId) {
+        return Event.findByPerson(this.personId)
+      }
+      */
+
+      throw Error('No specific URL could be generated')
     }
   },
   watch: {

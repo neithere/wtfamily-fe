@@ -105,7 +105,7 @@ export default {
         return true
       }
       return tokens.map(_ => text.includes(_)).every(_ => _)
-    },
+    }
   },
   watch: {
     selectedId (newValue, oldValue) {

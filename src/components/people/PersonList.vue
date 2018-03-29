@@ -15,15 +15,9 @@
 </template>
 
 <script>
-import { sortBy } from 'lodash'
-import Axios from 'axios'
+import Person from '@/models/Person'
 
 import PersonListItem from './PersonListItem'
-
-const BASE_URL_BY_IDS = 'http://localhost:5000/r/people/?ids='
-const BASE_URL_BY_EVENT = 'http://localhost:5000/r/people/?by_event='
-
-const SORT_BY_KEY = ['birth', 'name']
 
 export default {
   props: {
@@ -41,19 +35,17 @@ export default {
     }
   },
   created () {
-    let url
+    let people
 
     if (this.ids && this.ids.length) {
-      url = BASE_URL_BY_IDS + this.ids
+      people = Person.findByIds(this.ids)
     } else if (this.eventId) {
-      url = BASE_URL_BY_EVENT + this.eventId
+      people = Person.findByEvent(this.eventId)
     }
 
-    if (url) {
-      Axios.get(url).then(resp => {
-        this.object_list = sortBy(resp.data, SORT_BY_KEY)
-      })
-    }
+    people.then(data => {
+      this.object_list = data
+    })
   },
   components: {
     PersonListItem
