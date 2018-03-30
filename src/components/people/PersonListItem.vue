@@ -1,5 +1,7 @@
 <template>
-  <popper trigger="hover" :options="{placement: 'top-start'}">
+  <popper trigger="hover"
+    :options="{placement: 'top-start'}"
+    @show="shownAtLeastOnce = true">
 
     <div class="popper">  <!-- "card" makes items jump due to flex? -->
       <div class="card-body">
@@ -54,7 +56,8 @@ export default {
   },
   data () {
     return {
-      person: this.personData // TODO: AJAX if only id is supplied
+      person: this.personData, // TODO: AJAX if only id is supplied
+      shownAtLeastOnce: false
     }
   },
   computed: {
@@ -72,6 +75,11 @@ export default {
       let iconName = GENDER_TO_ICON_NAME[gender] || DEFAULT_ICON_NAME
 
       return ['fas', iconName]
+    }
+  },
+  methods: {
+    loadMoreData () {
+      this.shownAtLeastOnce = true
     }
   },
   components: {

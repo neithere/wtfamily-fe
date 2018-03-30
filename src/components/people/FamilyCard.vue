@@ -82,7 +82,9 @@ export default {
         .map(_ => _.id)
     },
     childIds () {
-      return this.object.child_ids.filter(_ => _ !== this.centralPersonId)
+      let childIds = this.object.child_ids || []
+
+      return childIds.filter(_ => _ !== this.centralPersonId)
     }
   },
   components: {

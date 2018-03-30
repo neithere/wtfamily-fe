@@ -2,12 +2,28 @@
   <div>
     <table class="table table-hover table-event mb-0">
       <thead v-if="!noHeader">
-        <th scope="col" title="Event id" v-if="showId"><span class="fas fa-list-ol"></span></th>
-        <th scope="col" title="Event date"><span class="fas fa-calendar"></span></th>
-        <th scope="col" title="Event place" v-if="!noPlace"><span class="fas fa-map-marker-alt"></span></th>
-        <th scope="col" title="Event type"><span class="fas fa-clipboard-list"></span></th>
-        <th scope="col" title="People related to the event"><span class="fas fa-users"></span></th>
-        <th scope="col" title="Event description and citations"><span class="fas fa-quote-right"></span></th>
+        <th scope="col" title="Event id"
+          v-if="showId">
+          <span class="fas fa-list-ol"></span>
+        </th>
+        <th scope="col" title="Event date">
+          <span class="fas fa-calendar"></span>
+        </th>
+        <th scope="col" title="Event place"
+          v-if="!noPlace">
+          <span class="fas fa-map-marker-alt"></span>
+        </th>
+        <th scope="col" title="Event type">
+          <span class="fas fa-clipboard-list"></span>
+        </th>
+        <th scope="col" title="People related to the event"
+          v-if="!noPeople">
+          <span class="fas fa-users"></span>
+        </th>
+        <th scope="col" title="Event description and citations"
+          v-if="!noDescription">
+          <span class="fas fa-quote-right"></span>
+        </th>
       </thead>
       <tbody>
         <tr v-for="event in object_list" :key="event.id">
@@ -17,12 +33,14 @@
             <place-item v-if="event.place_id" :id="event.place_id" />
           </td>
           <td scope="col">{{ event.type }}</td>
-          <td scope="col">
+          <td scope="col"
+            v-if="!noPeople">
             <person-list inline
               :event-id="event.id"
               :exclude-person-id="excludePersonId" />
           </td>
-          <td scope="col" class="cell-summary">
+          <td scope="col" class="cell-summary"
+            v-if="!noDescription">
             <p class="small">{{ event.summary }}</p>
             <ul v-if="!noCitations && event.citation_ids" class="list-inline">
               <li v-for="citationId in event.citation_ids"
@@ -61,6 +79,8 @@ export default {
     // display settings
     noHeader: Boolean,
     noPlace: Boolean,
+    noPeople: Boolean,
+    noDescription: Boolean,
     noCitations: Boolean,
     showId: Boolean,
     excludePersonId: String
