@@ -9,10 +9,11 @@
 
       <template v-if="object">
         <div v-if="partnerIds && partnerIds.length">
+          <h6>{{ parentsHeader }}</h6>
           <person-list :ids="partnerIds" />
         </div>
         <div v-if="childIds && childIds.length">
-          <h6>Children</h6>
+          <h6>{{ childrenHeader }}</h6>
           <person-list :ids="childIds" no-patronymic />
         </div>
 
@@ -54,6 +55,8 @@ export default {
       required: true
     },
     header: String,
+    parentsHeader: String,
+    childrenHeader: String,
     iconClass: String,
     centralPersonId: String
 

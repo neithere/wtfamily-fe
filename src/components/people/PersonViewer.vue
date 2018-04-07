@@ -37,6 +37,8 @@
           <div class="col-6">
             <family-card v-for="familyId in panel.selectedItem.child_in_families"
               header="Child in family"
+              parents-header="Parents"
+              children-header="Siblings"
               icon-class="fas fa-child"
               :central-person-id="panel.selectedItem.id"
               :mention-partners="panel.selectedItem.child_in_families.length > 1"
@@ -47,6 +49,8 @@
           <div class="col-6">
             <family-card v-for="familyId in panel.selectedItem.parent_in_families"
               header="Own family"
+              parents-header="Partner"
+              children-header="Children"
               icon-class="fas fa-users"
               :central-person-id="panel.selectedItem.id"
               :mention-partners="panel.selectedItem.parent_in_families.length > 1"
