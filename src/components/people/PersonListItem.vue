@@ -11,9 +11,8 @@
         </h5>
         <h6 class="card-subtitle text-muted">{{ person.birth }} — {{
           person.death }} (age ≈{{ person.age }})</h6>
-        <p class="card-text">
+        <p class="card-text" v-if="names.length > 1">
           <span v-for="(altName, index) in names" :key="index"
-            v-if="names.length > 1"
             class="item">{{ altName }}</span>
         </p>
         <!--

@@ -8,9 +8,9 @@
           {{ name }}
         </h5>
         <h6 class="card-subtitle text-muted">TODO: parent places: {{ parent_place_ids }}</h6>
-        <p class="card-text">
+        <p class="card-text" v-if="otherNames">
           AKA:
-          <span v-if="otherNames"
+          <span
             v-for="(otherName, index) in otherNames" :key="index"
             class="item">{{ otherName }}</span>
         </p>

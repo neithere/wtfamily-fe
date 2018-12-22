@@ -51,6 +51,7 @@ const ROUTES_PLACES = [
     name: 'place.detail',
     component: PlaceViewer,
     props: true
+    // props: (route) => ({ selectedId: route.query.id })
   }
 ]
 

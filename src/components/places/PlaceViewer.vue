@@ -41,11 +41,12 @@
           e.g. historically волость → район.  We do *not* show the full
           breadcrumbs here.
         -->
-        <place-item
-          v-if="panel.selectedItem.parent_place_ids"
-          v-for="placeId in panel.selectedItem.parent_place_ids"
-          :key="placeId"
-          :id="placeId" />
+        <div v-if="panel.selectedItem.parent_place_ids">
+          <place-item
+            v-for="placeId in panel.selectedItem.parent_place_ids"
+            :key="placeId"
+            :id="placeId" />
+        </div>
 
         <term label="Other names"
           :value="formatMultiNames(panel.selectedItem.other_names)" />
@@ -96,7 +97,7 @@ export default {
   },
   data () {
     return {
-      defaultCoords: {lat: 0, lng: 0},
+      defaultCoords: { lat: 0, lng: 0 },
       sourceUrl: SOURCE_URL,
       showMarkerLabels: false
     }
@@ -105,7 +106,7 @@ export default {
     selectItem (item) {
       this.$router.push({
         name: 'place.detail',
-        params: {id: item.id}
+        params: { id: item.id }
       })
       this.mapCenter = item.coords
     },

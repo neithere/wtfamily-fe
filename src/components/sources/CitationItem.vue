@@ -8,13 +8,14 @@
           {{ page }}
         </h5>
         <h6 v-if="source" class="card-subtitle text-muted">{{ source.title }}</h6>
-        <p class="card-text"
-          style="text-align: left;"
-          v-if="notes"
-          v-for="(note, index) in notes"
-          :key="index">
-          {{ note.text }}
-        </p>
+        <div v-if="notes">
+          <p class="card-text"
+            style="text-align: left;"
+            v-for="(note, index) in notes"
+            :key="index">
+            {{ note.text }}
+          </p>
+        </div>
       </div>
     </div>
 
