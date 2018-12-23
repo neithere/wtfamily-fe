@@ -104,8 +104,10 @@
           e.g. historically волость → район.  We do *not* show the full
           breadcrumbs here.
         -->
-        <div v-if="panel.selectedItem.parent_place_ids">
-          <place-item
+        <div class="direct-parent-places"
+          v-if="panel.selectedItem.parent_place_ids">
+          Direct parents:
+          <place-item class="direct-parent-places-item"
             v-for="placeId in panel.selectedItem.parent_place_ids"
             :key="placeId"
             :id="placeId" />
@@ -240,4 +242,11 @@ export default {
 
 <style lang="sass" scoped>
 @import "~leaflet/dist/leaflet.css"
+
+.direct-parent-places
+  &-item:after
+    content: ", "
+
+  &-item:last-child:after
+    content: ""
 </style>
