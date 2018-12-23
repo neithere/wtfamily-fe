@@ -14,7 +14,7 @@ const BASE_URL = 'http://localhost:5000/r/notes/'
 
 export default {
   props: {
-    id: {type: String, required: true}
+    id: { type: String, required: true }
   },
   data () {
     return {

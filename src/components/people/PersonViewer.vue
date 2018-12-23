@@ -106,7 +106,7 @@ export default {
     selectItem (item) {
       this.$router.push({
         name: 'person.detail',
-        params: {id: item.id}
+        params: { id: item.id }
       })
     },
     // FIXME: duplicate vs PlaceViewer

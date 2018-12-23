@@ -51,7 +51,7 @@ export default {
     selectItem (item) {
       this.$router.push({
         name: 'source.detail',
-        params: {id: item.id}
+        params: { id: item.id }
       })
     }
   },

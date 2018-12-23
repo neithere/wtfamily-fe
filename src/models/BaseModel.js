@@ -14,11 +14,11 @@ export default class BaseModel {
 
     requireNonEmptyObjectValues(params)
 
-    return Axios.get(url, {params})
+    return Axios.get(url, { params })
       .then(resp => sortBy(resp.data, this.SORT_BY_KEY))
   }
 
   static findByIds (ids) {
-    return this.findBy({ids: ids.join(',')})
+    return this.findBy({ ids: ids.join(',') })
   }
 }

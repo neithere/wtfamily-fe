@@ -1,16 +1,16 @@
 <template>
   <ul :class="{'list-inline': inline}">
-    <li
-      v-for="person in object_list"
-      :key="person.id"
-      v-if="person.id !== excludePersonId"
-      :class="{'list-inline-item': inline}">
+    <template v-if="person.id !== excludePersonId">
+      <li v-for="person in object_list"
+        :key="person.id"
+        :class="{'list-inline-item': inline}">
 
-      <person-list-item
-        :person-data="person"
-        :no-patronymic="noPatronymic" />
+        <person-list-item
+          :person-data="person"
+          :no-patronymic="noPatronymic" />
 
-    </li>
+      </li>
+    </template>
   </ul>
 </template>
 
