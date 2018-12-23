@@ -1,7 +1,7 @@
 <template>
   <ul :class="{'list-inline': inline}">
-    <template v-if="person.id !== excludePersonId">
-      <li v-for="person in object_list"
+    <template v-for="person in object_list">
+      <li v-if="person.id !== excludePersonId"
         :key="person.id"
         :class="{'list-inline-item': inline}">
 

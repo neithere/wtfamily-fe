@@ -10,8 +10,8 @@
             placeholder="Filter items">
         </p>
         <ul class="list-group">
-          <template v-if="matchesQuery(item)">
-            <li v-for="item in sortedObjectList"
+          <template v-for="item in sortedObjectList">
+            <li v-if="matchesQuery(item)"
               @click="publishSelectedItem(item)"
               :key="item.id"
               :class="{'list-group-item': true, active: item.id === selectedId}">
