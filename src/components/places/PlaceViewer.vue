@@ -11,15 +11,24 @@
       <label for="show_marker_labels">Show marker labels</label>
       -->
 
-      <l-map ref="myMap"
+      <l-map ref="map"
         :center="panel.selectedItem && panel.selectedItem.coords || defaultCoords"
         :zoom="zoom"
         :options="mapOptions"
         @update:zoom="zoom = $event"
         style="width: 100%; height: 50vh;">
+
+        <l-control-layers position="topright"  ></l-control-layers>
+        <l-control-scale position="bottomright" :imperial="false"></l-control-scale>
+
         <l-tile-layer
-          :url="tileLayerURL"
-          :attribution="tileLayerAttribution" />
+          v-for="tileProvider in tileProviders"
+          :key="tileProvider.name"
+          :name="tileProvider.name"
+          :visible="tileProvider.visible"
+          :url="tileProvider.url"
+          :attribution="tileProvider.attribution"
+          layer-type="base" />
 
         <template v-for="(item, index) in panel.items">
           <!-- TODO: detect non-point elems (cities, regions, countries) and
@@ -124,7 +133,7 @@
 
 <script>
 import Vue from 'vue'
-import { L, LIcon, LMap, LMarker, LTileLayer, LTooltip } from 'vue2-leaflet'
+import { L, LControlLayers, LControlScale, LIcon, LMap, LMarker, LTileLayer, LTooltip } from 'vue2-leaflet'
 import Router from 'vue-router'
 
 import PanelViewer from '../common/PanelViewer'
@@ -158,8 +167,32 @@ export default {
       sourceUrl: SOURCE_URL,
       // showMarkerLabels: false,
       mapOptions: {},
-      tileLayerURL: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-      tileLayerAttribution: '&copy; <j href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      tileProviders: [
+        {
+          name: 'OpenStreetMap',
+          visible: true,
+          url: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+          attribution: '&copy; <j href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        },
+        {
+          name: 'Wikimedia',
+          visible: false,
+          url: 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}{r}.png',
+          attribution: '<a href="https://wikimediafoundation.org/wiki/Maps_Terms_of_Use">Wikimedia</a>'
+        },
+        {
+          name: 'OpenRailwayMap',
+          visible: false,
+          url: 'https://{s}.tiles.openrailwaymap.org/standard/{z}/{x}/{y}.png',
+          attribution: 'Map data: &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> | Map style: &copy; <a href="https://www.OpenRailwayMap.org">OpenRailwayMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
+        },
+        {
+          name: 'OpenMapSurfer AdminBounds',
+          visible: false,
+          url: 'https://korona.geog.uni-heidelberg.de/tiles/adminb/x={x}&y={y}&z={z}',
+          attribution: 'Imagery from <a href="http://giscience.uni-hd.de/">GIScience Research Group @ University of Heidelberg</a> &mdash; Map data &copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+        }
+      ],
       markerSelectedURL: '/images/map-marker-selected.png'
     }
   },
@@ -192,6 +225,8 @@ export default {
     PanelViewer,
     PlaceItem,
     EventTable,
+    LControlLayers,
+    LControlScale,
     LIcon,
     LMap,
     LMarker,
