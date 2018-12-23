@@ -5,27 +5,51 @@
     title-attr="name"
     @selected="selectItem($event)">
     <template slot-scope="panel">
+      <!--
       <input type="checkbox" id="show_marker_labels" v-model="showMarkerLabels">
       <label for="show_marker_labels">Show marker labels</label>
+      -->
 
+      <l-map ref="myMap"
+        :center="panel.selectedItem && panel.selectedItem.coords || defaultCoords"
+        :zoom="10"
+        :options="mapOptions"
+        style="width: 100%; height: 50vh;">
+        <l-tile-layer
+          :url="tileLayerURL"
+          :attribution="tileLayerAttribution" />
+
+        <template v-for="(item, index) in panel.items">
+          <l-marker
+            v-if="item.coords"
+            :key="index"
+            :lat-lng="item.coords">
+            {{ item }}
+          </l-marker>
+        </template>
+      </l-map>
+
+      <!--
       <gmap-map
         :center="panel.selectedItem && panel.selectedItem.coords || defaultCoords"
         :zoom="10"
         style="width: 100%; height: 50vh;">
 
-        <!-- TODO: use sortedObjectList from PanelViewer -->
-        <gmap-marker
-          :key="index"
-          v-for="(item, index) in panel.items"
-          v-if="item.coords"
-          :position="item.coords"
-          :clickable="true"
-          :title="item.name"
-          :label="showMarkerLabels ? item.name : makeNameAbbr(item.name)"
-          :opacity="panel.selectedItem === item ? 1 : .7"
-          @click="selectItem(item)" />
+        TODO: use sortedObjectList from PanelViewer
+        <div v-if="item.coords">
+          <gmap-marker
+            :key="index"
+            v-for="(item, index) in panel.items"
+            :position="item.coords"
+            :clickable="true"
+            :title="item.name"
+            :label="showMarkerLabels ? item.name : makeNameAbbr(item.name)"
+            :opacity="panel.selectedItem === item ? 1 : .7"
+            @click="selectItem(item)" />
+        </div>
 
       </gmap-map>
+      -->
 
       <div v-if="panel.selectedItem">
         <h2>
@@ -69,8 +93,8 @@
 </template>
 
 <script>
-import * as VueGoogleMaps from 'vue2-google-maps'
 import Vue from 'vue'
+import { LMap, LTileLayer, LMarker } from 'vue2-leaflet'
 import Router from 'vue-router'
 
 import PanelViewer from '../common/PanelViewer'
@@ -82,13 +106,6 @@ import EventTable from '../events/EventTable'
 Vue.use(Router)
 
 const SOURCE_URL = 'http://localhost:5000/r/places/'
-const GOOGLE_MAPS_API_TOKEN = 'AIzaSyCJkmtBCYVPX9ImKuKdREI35RNDwPjfEQo'
-
-Vue.use(VueGoogleMaps, {
-  load: {
-    key: GOOGLE_MAPS_API_TOKEN
-  }
-})
 
 export default {
   name: 'source-viewer',
@@ -99,7 +116,10 @@ export default {
     return {
       defaultCoords: { lat: 0, lng: 0 },
       sourceUrl: SOURCE_URL,
-      showMarkerLabels: false
+      // showMarkerLabels: false,
+      mapOptions: {},
+      tileLayerURL: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      tileLayerAttribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }
   },
   methods: {
@@ -129,8 +149,15 @@ export default {
     PanelViewer,
     PlaceItem,
     EventTable,
+    LMap,
+    LTileLayer,
+    LMarker,
     Term,
     DebugJson
   }
 }
 </script>
+
+<style lang="sass" scoped>
+@import "~leaflet/dist/leaflet.css"
+</style>

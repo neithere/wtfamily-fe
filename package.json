@@ -17,7 +17,8 @@
     "vue": "^2.5.17",
     "vue-popperjs": "^1.6.3",
     "vue-router": "^3.0.1",
-    "vue2-leaflet": "^1.2.3"
+    "vue2-leaflet": "^1.2.3",
+    "webpack": "^4.28.2"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.2.0",
