@@ -4,6 +4,7 @@
     :selected-id="id"
     title-attr="name"
     @selected="selectItem($event)">
+
     <template slot-scope="panel">
       <!--
       <input type="checkbox" id="show_marker_labels" v-model="showMarkerLabels">
@@ -12,19 +13,48 @@
 
       <l-map ref="myMap"
         :center="panel.selectedItem && panel.selectedItem.coords || defaultCoords"
-        :zoom="10"
+        :zoom="zoom"
         :options="mapOptions"
+        @update:zoom="zoom = $event"
         style="width: 100%; height: 50vh;">
         <l-tile-layer
           :url="tileLayerURL"
           :attribution="tileLayerAttribution" />
 
         <template v-for="(item, index) in panel.items">
+          <!-- TODO: detect non-point elems (cities, regions, countries) and
+               draw a circle instead of the default marker.  There's `l-circle`
+               (fixed radius) and `l-circle-marker` (just a shaped marker).
+
+               Perhaps set a flat on backend depending on place type and/or ask
+               user to explicitly define a custom attribute?
+          -->
           <l-marker
             v-if="item.coords"
             :key="index"
-            :lat-lng="item.coords">
-            {{ item }}
+            :lat-lng="item.coords"
+            :title="item.name"
+            :icon="item.icon"
+            @click="selectItem(item)">
+
+            <l-icon
+              v-if="panel.selectedItem === item"
+              :icon-url="markerSelectedURL"></l-icon>
+
+            <l-tooltip :options="{permanent: false, interactive: true}">
+              <strong>{{ item.name }}</strong>
+              <p v-if="item.other_names.length">
+                Also known as:
+                <ul>
+                  <li
+                    v-for="(altName, altNameIndex) in item.other_names"
+                    :key="altNameIndex">
+                    {{ altName }}
+                  </li>
+                </ul>
+              </p>
+            </l-tooltip>
+
           </l-marker>
         </template>
       </l-map>
@@ -94,7 +124,7 @@
 
 <script>
 import Vue from 'vue'
-import { LMap, LTileLayer, LMarker } from 'vue2-leaflet'
+import { L, LIcon, LMap, LMarker, LTileLayer, LTooltip } from 'vue2-leaflet'
 import Router from 'vue-router'
 
 import PanelViewer from '../common/PanelViewer'
@@ -105,6 +135,15 @@ import EventTable from '../events/EventTable'
 
 Vue.use(Router)
 
+// HACK for Leaflet default icon + Webpack.
+// See this long thread: https://github.com/Leaflet/Leaflet/issues/4968
+delete L.Icon.Default.prototype._getIconUrl
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: require('leaflet/dist/images/marker-icon-2x.png'),
+  iconUrl: require('leaflet/dist/images/marker-icon.png'),
+  shadowUrl: require('leaflet/dist/images/marker-shadow.png')
+})
+
 const SOURCE_URL = 'http://localhost:5000/r/places/'
 
 export default {
@@ -114,12 +153,26 @@ export default {
   },
   data () {
     return {
+      zoom: 10,
       defaultCoords: { lat: 0, lng: 0 },
       sourceUrl: SOURCE_URL,
       // showMarkerLabels: false,
       mapOptions: {},
       tileLayerURL: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
-      tileLayerAttribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+      tileLayerAttribution: '&copy; <j href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+      markerSelectedURL: '/images/map-marker-selected.png'
+    }
+  },
+  computed: {
+    itemsAdapted () {
+      // TODO: use sortedObjectList from PanelViewer
+      return this.panel.items.map(_ => ({
+        ..._,
+        icon: {
+          prefix: '',
+          glyph: 'A'
+        }
+      }))
     }
   },
   methods: {
@@ -133,25 +186,17 @@ export default {
     // FIXME: duplicate vs PlaceViewer
     formatMultiNames (value) {
       return value ? value.join(' / ') : null
-    },
-    makeNameAbbr (name) {
-      let words = name.replace(/[.,/#!$%^&*;:{}=\-_`~()]/g, '')
-        .replace(/\s{2,}/g, ' ')
-        .split(' ')
-
-      if (words.length > 1) {
-        name = words.map(_ => _[0]).join('')
-      }
-      return name.slice(0, 3)
     }
   },
   components: {
     PanelViewer,
     PlaceItem,
     EventTable,
+    LIcon,
     LMap,
-    LTileLayer,
     LMarker,
+    LTileLayer,
+    LTooltip,
     Term,
     DebugJson
   }
