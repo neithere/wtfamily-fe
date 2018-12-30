@@ -26,7 +26,7 @@
         <router-link
           :to="{name: 'source.detail', params: {id: sourceId}}"
           :title="source.title">
-          {{ source.abbrev }},
+          {{ source.abbrev || source.title }},
           {{ page }}
         </router-link>
       </template>

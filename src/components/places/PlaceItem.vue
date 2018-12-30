@@ -1,5 +1,9 @@
 <template>
-  <popper trigger="hover" :options="{placement: 'top-start'}">
+  <popper
+    trigger="hover"
+    :options="{placement: 'top-start'}"
+    @show="visible = true"
+    @hide="visible = false">
 
     <div class="popper card">
       <div class="card-body">
@@ -15,8 +19,20 @@
             class="item">{{ otherName }}</span>
         </p>
         <p class="card-text">
-          TODO: show map
-          {{ coords }}
+          <l-map ref="map"
+            v-if="visible && coords"
+            :center="coords"
+            :zoom="mapZoom"
+            style="width: 400px; height: 200px;">
+            <l-tile-layer
+              :name="mapTileLayerName"
+              :url="mapTileLayerURL"
+              :attribution="mapTileLayerAttribution" />
+            <l-marker
+              :lat-lng="coords"
+              :title="name">
+            </l-marker>
+          </l-map>
         </p>
       </div>
     </div>
@@ -33,6 +49,7 @@
 
 <script>
 import Axios from 'axios'
+import { LMarker, LMap, LTileLayer } from 'vue2-leaflet'
 import Popper from 'vue-popperjs'
 import 'vue-popperjs/dist/css/vue-popper.css'
 
@@ -49,12 +66,17 @@ export default {
   },
   data () {
     return {
+      visible: false,
       coords: null,
       name: null,
       other_names: null,
       parent_place_ids: null,
       citation_ids: null,
-      note_ids: null
+      note_ids: null,
+      mapZoom: 7,
+      mapTileLayerName: 'OpenStreetMap',
+      mapTileLayerURL: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      mapTileLayerAttribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }
   },
   created () {
@@ -77,6 +99,9 @@ export default {
     }
   },
   components: {
+    LMarker,
+    LMap,
+    LTileLayer,
     Popper
   }
 }
