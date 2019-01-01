@@ -1,38 +1,33 @@
 <template>
   <div id="app">
     <header>
+      <b-navbar toggleable="md" type="light">
 
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <router-link class="navbar-brand" :to="{name: 'home'}">WhatTheFamily</router-link>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarText">
-          <ul class="navbar-nav mr-auto">
-            <router-link tag="li" class="nav-item" active-class="active"
-              :to="{name: 'source.list'}">
-              <a class="nav-link">
-                <span class="fas fa-book"></span> Sources
-              </a>
-            </router-link>
-            <router-link tag="li" class="nav-item" active-class="active"
-              :to="{name: 'person.list'}">
-              <a class="nav-link">
-                <span class="fas fa-users"></span> People
-              </a>
-            </router-link>
-            <router-link tag="li" class="nav-item" active-class="active"
-              :to="{name: 'place.list'}">
-              <a class="nav-link">
-                <span class="fas fa-globe"></span> Places
-              </a>
-            </router-link>
-          </ul>
-          <span class="navbar-text">
-            <!-- Navbar text with an inline element -->
-          </span>
-        </div>
-      </nav>
+        <b-navbar-brand>
+          <router-link class="navbar-brand" :to="{name: 'home'}">WhatTheFamily</router-link>
+        </b-navbar-brand>
+
+        <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+
+        <b-collapse is-nav visible id="nav_collapse">
+          <b-navbar-nav>
+
+            <b-nav-item :to="{name: 'source.list'}">
+              <fa-icon icon="book"></fa-icon> Sources
+            </b-nav-item>
+
+            <b-nav-item :to="{name: 'person.list'}">
+              <fa-icon icon="users"></fa-icon> People
+            </b-nav-item>
+
+            <b-nav-item :to="{name: 'place.list'}">
+              <fa-icon icon="globe"></fa-icon> Places
+            </b-nav-item>
+
+          </b-navbar-nav>
+        </b-collapse>
+
+      </b-navbar>
     </header>
     <article>
       <router-view></router-view>
