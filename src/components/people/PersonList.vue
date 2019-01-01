@@ -7,7 +7,8 @@
 
         <person-list-item
           :person-data="person"
-          :no-patronymic="noPatronymic" />
+          :no-patronymic="noPatronymic || brief"
+          :no-date="brief" />
 
       </li>
     </template>
@@ -27,7 +28,8 @@ export default {
 
     excludePersonId: String,
     noPatronymic: Boolean,
-    inline: Boolean
+    inline: Boolean,
+    brief: Boolean
   },
   data () {
     return {

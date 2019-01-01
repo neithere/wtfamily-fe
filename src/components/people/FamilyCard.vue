@@ -12,14 +12,19 @@
       <template v-if="object">
         <div v-if="partnerIds && partnerIds.length">
           <h6>{{ parentsHeader }}</h6>
-          <person-list :ids="partnerIds" />
+          <person-list
+            :ids="partnerIds" />
         </div>
         <div v-if="childIds && childIds.length">
           <h6>{{ childrenHeader }}</h6>
-          <person-list :ids="childIds" no-patronymic />
+          <person-list
+            :ids="childIds"
+            no-patronymic />
         </div>
 
-        <event-table v-if="object.event_ids" :ids="object.event_ids" />
+        <event-table
+          v-if="object.event_ids"
+          :ids="object.event_ids" />
 
         <p v-if="object.attributes">TODO: attributes {{ object.attributes }}</p>
 
