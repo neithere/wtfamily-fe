@@ -3,11 +3,11 @@
 
     <div class="popper card">
       <div class="card-body">
+        <h6 v-if="source" class="card-subtitle text-muted">{{ source.title }}</h6>
         <h5 class="card-title">
-          <span class="fas fa-sticky-note"></span>
+          <fa-icon :icon="['far', 'sticky-note']"></fa-icon>
           {{ page }}
         </h5>
-        <h6 v-if="source" class="card-subtitle text-muted">{{ source.title }}</h6>
         <div v-if="notes">
           <p class="card-text"
             style="text-align: left;"
@@ -20,9 +20,8 @@
     </div>
 
     <abbr title="" slot="reference">
-      <span class="fas fa-sticky-note"></span>
-
       <template v-if="source">
+        <fa-icon :icon="['far', 'sticky-note']"></fa-icon>
         <router-link
           :to="{name: 'source.detail', params: {id: sourceId}}"
           :title="source.title">

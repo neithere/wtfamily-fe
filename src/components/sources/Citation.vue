@@ -1,6 +1,6 @@
 <template>
-  <div class="card" :title="id">
-    <div class="card-header" :title="id">
+  <div class="card">
+    <div class="card-header">
         <span class="fas fa-sticky-note"></span> {{ page }}
     </div>
     <div class="card-body">

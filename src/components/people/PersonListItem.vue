@@ -6,7 +6,7 @@
     <div class="popper">  <!-- "card" makes items jump due to flex? -->
       <div class="card-body">
         <h5 class="card-title">
-          <span :class="genderIconClasses"></span>
+          <fa-icon :icon="genderIcon"></fa-icon>
           {{ person.name }}
         </h5>
         <h6 class="card-subtitle text-muted">{{ person.birth }} — {{
@@ -23,7 +23,7 @@
     </div>
 
     <abbr title="" slot="reference">
-      <span :class="genderIconClasses"></span>
+      <fa-icon :icon="genderIcon"></fa-icon>
       <router-link :to="{name: 'person.detail', params: {id: person.id}}">
         {{ name }} ({{ person.birth }})
       </router-link>
@@ -37,10 +37,10 @@ import Popper from 'vue-popperjs'
 import 'vue-popperjs/dist/css/vue-popper.css'
 
 // FIXME duplicated vs PersonViewer
-const DEFAULT_ICON_NAME = 'fa-user'
+const DEFAULT_ICON_NAME = 'user'
 const GENDER_TO_ICON_NAME = {
-  M: 'fa-male',
-  F: 'fa-female'
+  M: 'male',
+  F: 'female'
 }
 
 const unique = (xs) => new Set([...xs])
@@ -69,11 +69,10 @@ export default {
     names () {
       return unique(this.person.names)
     },
-    genderIconClasses () {
+    genderIcon () {
       let gender = this.person.gender
-      let iconName = GENDER_TO_ICON_NAME[gender] || DEFAULT_ICON_NAME
 
-      return ['fas', iconName]
+      return GENDER_TO_ICON_NAME[gender] || DEFAULT_ICON_NAME
     }
   },
   methods: {

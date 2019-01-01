@@ -2,7 +2,9 @@
   <div class="card">
     <div class="card-body">
       <h5 class="card-title">
-        <span v-if="iconClass" :class="iconClass"></span>
+        <fa-icon
+          v-if="icon"
+          :icon="icon"></fa-icon>
         {{ header }}
         <!-- span v-if="mentionPartners">({{ partnerNames }})</span -->
       </h5>
@@ -57,7 +59,7 @@ export default {
     header: String,
     parentsHeader: String,
     childrenHeader: String,
-    iconClass: String,
+    icon: String,
     centralPersonId: String
 
     // if true, shows "John + Mary" in family header

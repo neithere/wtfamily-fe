@@ -11,7 +11,7 @@
 
       <div v-if="panel.selectedItem">
         <h2>
-          <span :class="genderIconClasses(panel.selectedItem)"></span>
+          <fa-icon :icon="genderIcon(panel.selectedItem)"></fa-icon>
           {{ panel.selectedItem.name }}
         </h2>
         <h3 class="card-subtitle text-muted">
@@ -39,7 +39,7 @@
               header="Child in family"
               parents-header="Parents"
               children-header="Siblings"
-              icon-class="fas fa-child"
+              icon="child"
               :central-person-id="panel.selectedItem.id"
               :mention-partners="panel.selectedItem.child_in_families.length > 1"
               :key="familyId"
@@ -51,7 +51,7 @@
               header="Own family"
               parents-header="Partner"
               children-header="Children"
-              icon-class="fas fa-users"
+              icon="users"
               :central-person-id="panel.selectedItem.id"
               :mention-partners="panel.selectedItem.parent_in_families.length > 1"
               :key="familyId"
@@ -83,10 +83,10 @@ Vue.use(Router)
 const SOURCE_URL = 'http://localhost:5000/r/people/'
 
 // FIXME duplicated vs PersonListItem
-const DEFAULT_ICON_NAME = 'fa-user'
+const DEFAULT_ICON_NAME = 'user'
 const GENDER_TO_ICON_NAME = {
-  M: 'fa-male',
-  F: 'fa-female'
+  M: 'male',
+  F: 'female'
 }
 
 export default {
@@ -113,11 +113,10 @@ export default {
     formatMultiNames (value) {
       return value ? value.join(' / ') : null
     },
-    genderIconClasses (person) {
+    genderIcon (person) {
       let gender = person.gender
-      let iconName = GENDER_TO_ICON_NAME[gender] || DEFAULT_ICON_NAME
 
-      return ['fas', iconName]
+      return GENDER_TO_ICON_NAME[gender] || DEFAULT_ICON_NAME
     }
   },
   components: {

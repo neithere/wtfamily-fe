@@ -9,8 +9,9 @@ export default class BaseModel {
   static SORT_BY_KEY = []
 
   static findBy (params) {
-    console.log(params, this.BASE_URL, this.RESOURCE_NAME)
     let url = this.BASE_URL + this.RESOURCE_NAME + '/'
+
+    // console.log('baseModel.findBy', params, this.BASE_URL, this.RESOURCE_NAME, url)
 
     requireNonEmptyObjectValues(params)
 

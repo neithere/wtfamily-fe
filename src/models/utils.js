@@ -2,7 +2,7 @@ export const requireNonEmptyObjectValues = variables => {
   Object.keys(variables).forEach(k => {
     const value = variables[k]
 
-    console.log('validating', { k, value })
+    // console.log('validating', { k, value })
 
     if (!value) {
       throw Error(k + ' must be defined')
