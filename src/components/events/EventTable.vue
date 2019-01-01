@@ -235,12 +235,17 @@ export default {
     ids (val, oldVal) {
       // FIXME: for some reason it re-fetches data sometimes (in parent
       // component), and somehow visually equal arrays appear different in the
-      // comparison below (OTOH, maybe try `JSON.parse(JSON.stringify(x))` on
-      // these values before printing them to console?). This leads to the map
-      // sources being removed.
+      // comparison below (*but* their *stringified JSON representations* are
+      // equal). This leads to the map sources being removed.
       // Either solve that problem outside of this component, or make this
       // component more robust (either compare arrays better, or recompute data
       // for the map).
+      // HACK: for now we just ignore the "not really changed" IDs.
+      if (JSON.stringify(val) === JSON.stringify(oldVal)) {
+        // eslint-disable-next-line
+        console.warn('ids changed, *but* they are still the same as stringified JSON → not re-fetching the data', { val, oldVal })
+        return
+      }
       this.fetchData()
     },
     placeId (val, oldVal) {

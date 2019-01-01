@@ -104,6 +104,12 @@ export default {
   },
   methods: {
     selectItem (item) {
+      // HACK: `item.id` would raise attribute error if `item` is undefined.
+      //       it's unclear whether the event should happen at all.
+      if (!item) {
+        return
+      }
+
       this.$router.push({
         name: 'person.detail',
         params: { id: item.id }

@@ -12,7 +12,6 @@
         <term label="Abbrev" :value="panel.selectedItem.abbrev" />
         <term label="Repo ID" :value="panel.selectedItem.repository" />
 
-        {{panel.selectedItem.id}}
         <citation-list :source-id="panel.selectedItem.id" />
       </div>
     </template>
