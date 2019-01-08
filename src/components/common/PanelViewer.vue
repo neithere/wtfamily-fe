@@ -1,6 +1,11 @@
 <template>
-  <div class="panel-viewer">
-    <div class="side-panel" :class="sidePanelGridClass">
+  <vue-splitter
+    class="panel-viewer"
+    :margin=0
+    :default-percent="leftPanelWidthPercentage">
+
+    <div class="side-panel"
+      slot="left-pane">
       <div v-if="!objectList.length">
         <span class="fas fa-circle-notch fa-spin fa-5x"></span>
       </div>
@@ -21,18 +26,22 @@
         </ul>
       </div>
     </div>
-    <div class="main-panel container-fluid" :class="mainPanelGridClass">
+
+    <div class="container-fluid"
+      slot="right-pane">
       <slot
         :items="sortedObjectList"
         :selected-item="selectedItem">
       </slot>
     </div>
-  </div>
+
+  </vue-splitter>
 </template>
 
 <script>
 import { sortBy } from 'lodash'
 import Axios from 'axios'
+import VueSplitter from '@rmp135/vue-splitter'
 
 export default {
   name: 'panel-viewer',
@@ -76,6 +85,9 @@ export default {
     return maybeFetchOne(this.selectedId).then(fetchAll)
   },
   computed: {
+    leftPanelWidthPercentage () {
+      return this.wideSidePanel ? 20 : 10
+    },
     sortedObjectList () {
       return sortBy(this.objectList, this.titleAttr)
     },
@@ -115,11 +127,13 @@ export default {
     }
   },
   components: {
+    VueSplitter
   }
 }
 </script>
 
 <style lang="sass" scoped>
+
 .panel-viewer
   overflow: hidden
   display: flex
