@@ -4,6 +4,7 @@
       :key="citation.id"
       :id="citation.id"
       :page="citation.page"
+      :date="citation.date"
       :note-ids="citation.note_ids" />
   </div>
 </template>

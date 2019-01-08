@@ -23,8 +23,8 @@
       <template v-if="source">
         <fa-icon :icon="['far', 'sticky-note']"></fa-icon>
         <router-link
-          :to="{name: 'source.detail', params: {id: sourceId}}"
-          :title="source.title">
+          class="router-link-citation"
+          :to="{ name: 'source.detail', params: { id: sourceId } }">
           {{ source.abbrev || source.title }},
           {{ page }}
         </router-link>

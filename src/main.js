@@ -20,12 +20,14 @@ import {
   faUsers
 } from '@fortawesome/free-solid-svg-icons'
 import {
+  faBookmark as faBookmarkRegular,
   faStickyNote as faStickyNoteRegular
 } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 faLibrary.add(
   faBook,
+  faBookmarkRegular,
   faChild,
   faFemale,
   faGlobe,

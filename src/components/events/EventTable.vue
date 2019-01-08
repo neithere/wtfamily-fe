@@ -1,116 +1,145 @@
 <template>
-  <div>
+  <!-- b-card :title="title" :sub-title="subTitle" -->
+  <b-card no-body>
+    <h3 slot="header">
+      <fa-icon
+        v-if="icon"
+        :icon="icon"></fa-icon>
+      {{ title }}
+    </h3>
 
-    <div class="map-section"
-      v-if="!placeId && placesWithCoords.length">
+    <b-tabs card>
 
-      <l-map ref="map"
-        :zoom="mapZoom"
-        :min-zoom="mapMinZoom"
-        :max-zoom="mapMaxZoom"
-        :bounds="mapBounds"
-        :padding="mapPadding"
-        style="width: 100%; height: 400px;">
+      <b-tab
+        :title="contentTitle">
 
-        <l-control-scale position="bottomright" :imperial="false"></l-control-scale>
+        <slot></slot>
 
-        <l-tile-layer
-          :name="mapTileLayerName"
-          :url="mapTileLayerURL"
-          :attribution="mapTileLayerAttribution" />
+      </b-tab>
 
-        <template
-          v-for="(placeData, _placeId) in places">
-          <l-marker
-            v-if="placeData.coords"
-            :key="_placeId"
-            :lat-lng="placeData.coords"
-            :title="placeData.name">
+      <b-tab
+        :title="timelineTitle">
+        <!-- @click="isMapVisible = false; isTimelineVisible = true;" -->
 
-            <l-popup class="place-popup">
-              <strong>{{ placeData.name }}</strong>
-              <ul class="place-popup-event-list">
-                <li class="place-popup-event-list-item"
-                  v-for="event in eventsByPlace[_placeId]"
-                  :key="event.id">
-                  <span class="place-popup-event-list-item-col">
-                    {{ event.date }} — {{ event.type }}
-                  </span>
-                  <person-list inline brief
-                    class="place-popup-event-list-item-col place-popup-event-list-item-person-list"
-                    v-if="!personId && !noPeople"
-                    :event-id="event.id"
-                    :exclude-person-id="excludePersonId" />
-                </li>
-              </ul>
-            </l-popup>
+        <table class="table table-hover table-event mb-0">
+          <thead v-if="!noHeader">
+            <th scope="col" title="Event id"
+              v-if="showId">
+              <span class="fas fa-list-ol"></span>
+            </th>
+            <th scope="col" title="Event date">
+              <span class="fas fa-calendar"></span>
+            </th>
+            <th scope="col" title="Event place"
+              v-if="!noPlace">
+              <span class="fas fa-map-marker-alt"></span>
+            </th>
+            <th scope="col" title="Event type">
+              <span class="fas fa-clipboard-list"></span>
+            </th>
+            <th scope="col" title="People related to the event"
+              v-if="!noPeople">
+              <span class="fas fa-users"></span>
+            </th>
+            <th scope="col" title="Event description and citations"
+              v-if="!noDescription">
+              <span class="fas fa-quote-right"></span>
+            </th>
+          </thead>
+          <tbody>
+            <tr v-for="event in object_list" :key="event.id">
+              <th scope="row" v-if="showId">{{ event.id }}</th>
+              <td scope="col">{{ event.date }} <debug-json>{{ event }}</debug-json></td>
+              <td scope="col" v-if="!noPlace">
+                <place-item
+                  v-if="event.place_id"
+                  :id="event.place_id"
+                  @loaded="addPlaceToMap" />
+              </td>
+              <td scope="col">{{ event.type }}</td>
+              <td scope="col"
+                v-if="!noPeople">
+                <person-list inline
+                  :event-id="event.id"
+                  :exclude-person-id="excludePersonId" />
+              </td>
+              <td scope="col" class="cell-summary"
+                v-if="!noDescription">
+                <p class="small">{{ event.summary }}</p>
+                <ul v-if="!noCitations && event.citation_ids" class="list-inline">
+                  <li v-for="citationId in event.citation_ids"
+                    :key="citationId"
+                    class="list-inline-item">
+                    <citation-item
+                      :id="citationId" />
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-          </l-marker>
-        </template>
-      </l-map>
-    </div>
+        <slot name="no-data"
+          v-if="!object_list || !object_list.length"></slot>
 
-    <table class="table table-hover table-event mb-0">
-      <thead v-if="!noHeader">
-        <th scope="col" title="Event id"
-          v-if="showId">
-          <span class="fas fa-list-ol"></span>
-        </th>
-        <th scope="col" title="Event date">
-          <span class="fas fa-calendar"></span>
-        </th>
-        <th scope="col" title="Event place"
-          v-if="!noPlace">
-          <span class="fas fa-map-marker-alt"></span>
-        </th>
-        <th scope="col" title="Event type">
-          <span class="fas fa-clipboard-list"></span>
-        </th>
-        <th scope="col" title="People related to the event"
-          v-if="!noPeople">
-          <span class="fas fa-users"></span>
-        </th>
-        <th scope="col" title="Event description and citations"
-          v-if="!noDescription">
-          <span class="fas fa-quote-right"></span>
-        </th>
-      </thead>
-      <tbody>
-        <tr v-for="event in object_list" :key="event.id">
-          <th scope="row" v-if="showId">{{ event.id }}</th>
-          <td scope="col">{{ event.date }}</td>
-          <td scope="col" v-if="!noPlace">
-            <place-item
-              v-if="event.place_id"
-              :id="event.place_id"
-              @loaded="addPlaceToMap" />
-          </td>
-          <td scope="col">{{ event.type }}</td>
-          <td scope="col"
-            v-if="!noPeople">
-            <person-list inline
-              :event-id="event.id"
-              :exclude-person-id="excludePersonId" />
-          </td>
-          <td scope="col" class="cell-summary"
-            v-if="!noDescription">
-            <p class="small">{{ event.summary }}</p>
-            <ul v-if="!noCitations && event.citation_ids" class="list-inline">
-              <li v-for="citationId in event.citation_ids"
-                :key="citationId"
-                class="list-inline-item">
-                <citation-item
-                  :id="citationId" />
-              </li>
-            </ul>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+      </b-tab>
 
-    <slot name="no-data"
-      v-if="!object_list || !object_list.length"></slot>
-  </div>
+      <b-tab
+        :title="mapTitle"
+        :disabled="!isMapEnabled"
+        @click="isMapVisible = true; isTimelineVisible = false;">
+        <!-- @click="isMapVisible = true; isTimelineVisible = false;"-->
+
+        <l-map ref="map"
+          v-if="isMapEnabled && isMapVisible"
+          :zoom="mapZoom"
+          :min-zoom="mapMinZoom"
+          :max-zoom="mapMaxZoom"
+          :bounds="mapBounds"
+          :padding="mapPadding"
+          style="width: 100%; height: 400px;">
+
+          <l-control-scale position="bottomright" :imperial="false"></l-control-scale>
+
+          <l-tile-layer
+            :name="mapTileLayerName"
+            :url="mapTileLayerURL"
+            :attribution="mapTileLayerAttribution" />
+
+          <template
+            v-for="(placeData, _placeId) in places">
+            <l-marker
+              v-if="placeData.coords"
+              :key="_placeId"
+              :lat-lng="placeData.coords"
+              :title="placeData.name">
+
+              <l-popup class="place-popup">
+                <strong>{{ placeData.name }}</strong>
+                <ul class="place-popup-event-list">
+                  <li class="place-popup-event-list-item"
+                    v-for="event in eventsByPlace[_placeId]"
+                    :key="event.id">
+                    <span class="place-popup-event-list-item-col">
+                      {{ event.date }} — {{ event.type }}
+                    </span>
+                    <person-list inline brief
+                      class="place-popup-event-list-item-col place-popup-event-list-item-person-list"
+                      v-if="!personId && !noPeople"
+                      :event-id="event.id"
+                      :exclude-person-id="excludePersonId" />
+                  </li>
+                </ul>
+              </l-popup>
+
+            </l-marker>
+          </template>
+        </l-map>
+
+      </b-tab>
+
+    </b-tabs>
+  </b-card>
 </template>
 
 <script>
@@ -132,6 +161,14 @@ export default {
     citationId: String,
     personId: String,
     // NOTE: adding something here? update `watch`, too.
+
+    icon: [String, Array],
+    title: String,
+    subTitle: String,
+    contentTitle: {
+      type: String,
+      default: 'Content'
+    },
 
     // display settings
     noHeader: Boolean,
@@ -166,6 +203,15 @@ export default {
     this.fetchData()
   },
   computed: {
+    timelineTitle () {
+      return (this.object_list ? this.object_list.length : 'no') + ' known events'
+    },
+    mapTitle () {
+      return (this.placesWithCoords ? this.placesWithCoords.length : 'no') + ' places on the map'
+    },
+    isMapEnabled () {
+      return Boolean(!this.placeId && this.placesWithCoords.length)
+    },
     mapBounds () {
       return this.placesWithCoords.map(_ => _.coords) ||
         [MAP_FALLBACK_COORDS]

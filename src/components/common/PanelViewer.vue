@@ -142,4 +142,5 @@ export default {
 
 .query
   width: 100%
+
 </style>

@@ -10,58 +10,63 @@
       <debug-json>{{ panel.selectedItem }}</debug-json>
 
       <div v-if="panel.selectedItem">
-        <h2>
-          <fa-icon :icon="genderIcon(panel.selectedItem)"></fa-icon>
-          {{ panel.selectedItem.name }}
-        </h2>
-        <h3 class="card-subtitle text-muted">
-          <small class="text-muted">
-            ✶{{ panel.selectedItem.birth }}
-            <template v-if="panel.selectedItem.death">
-              ✝{{ panel.selectedItem.death }}
-            </template>
-            (age {{ panel.selectedItem.age }})
-          </small>
-        </h3>
-
-        <term label="Name variations"
-          :value="formatMultiNames(panel.selectedItem.names)" />
-
-        <!--
-        <term label="Pub info" :value="panel.selectedItem.pubinfo" />
-        <term label="Abbrev" :value="panel.selectedItem.abbrev" />
-        <term label="Repo ID" :value="panel.selectedItem.repository" />
-        -->
-
-        <div class="row">
-          <div class="col-6">
-            <family-card v-for="familyId in panel.selectedItem.child_in_families"
-              header="Child in family"
-              parents-header="Parents"
-              children-header="Siblings"
-              icon="child"
-              :central-person-id="panel.selectedItem.id"
-              :mention-partners="panel.selectedItem.child_in_families.length > 1"
-              :key="familyId"
-              :id="familyId" />
-          </div>
-
-          <div class="col-6">
-            <family-card v-for="familyId in panel.selectedItem.parent_in_families"
-              header="Own family"
-              parents-header="Partner"
-              children-header="Children"
-              icon="users"
-              :central-person-id="panel.selectedItem.id"
-              :mention-partners="panel.selectedItem.parent_in_families.length > 1"
-              :key="familyId"
-              :id="familyId" />
-          </div>
-        </div>
-
         <event-table
           :ids="panel.selectedItem.event_ids"
-          :exclude-person-id="panel.selectedItem.id" />
+          :exclude-person-id="panel.selectedItem.id"
+          :title="panel.selectedItem.name"
+          :subTitle="panel.selectedItem.birth"
+          :icon="genderIcon(panel.selectedItem)">
+
+          <!--h2>
+            <fa-icon :icon="genderIcon(panel.selectedItem)"></fa-icon>
+            {{ panel.selectedItem.name }}
+          </h2-->
+          <h3 class="card-subtitle text-muted">
+            <small class="text-muted">
+              ✶{{ panel.selectedItem.birth }}
+              <template v-if="panel.selectedItem.death">
+                ✝{{ panel.selectedItem.death }}
+              </template>
+              (age {{ panel.selectedItem.age }})
+            </small>
+          </h3>
+
+          <term label="Name variations"
+            :value="formatMultiNames(panel.selectedItem.names)" />
+
+          <!--
+          <term label="Pub info" :value="panel.selectedItem.pubinfo" />
+          <term label="Abbrev" :value="panel.selectedItem.abbrev" />
+          <term label="Repo ID" :value="panel.selectedItem.repository" />
+          -->
+
+          <div class="row">
+            <div class="col-6">
+              <family-card v-for="familyId in panel.selectedItem.child_in_families"
+                header="Child in family"
+                parents-header="Parents"
+                children-header="Siblings"
+                icon="child"
+                :central-person-id="panel.selectedItem.id"
+                :mention-partners="panel.selectedItem.child_in_families.length > 1"
+                :key="familyId"
+                :id="familyId" />
+            </div>
+
+            <div class="col-6">
+              <family-card v-for="familyId in panel.selectedItem.parent_in_families"
+                header="Own family"
+                parents-header="Partner"
+                children-header="Children"
+                icon="users"
+                :central-person-id="panel.selectedItem.id"
+                :mention-partners="panel.selectedItem.parent_in_families.length > 1"
+                :key="familyId"
+                :id="familyId" />
+            </div>
+          </div>
+
+        </event-table>
 
       </div>
     </template>
@@ -135,11 +140,11 @@ export default {
 }
 </script>
 
-<style lang="sass" scoped>
+<style lang="sass">  // FIXME non-scoped b/c the icon _name_ is passed to EventTable which creates the component itself
   // FIXME: gender classes are duplicated vs PersonListItem
-  .fa-male
+  svg.fa-male
     color: #003399
 
-  .fa-female
+  svg.fa-female
     color: #9933FF
 </style>
