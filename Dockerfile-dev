@@ -1,0 +1,24 @@
+# Usage:
+#  docker build -t test-fe -f Dockerfile-dev . && \
+#  docker run -it --rm -v ${PWD}/src:/usr/src/app/src test-fe bash
+
+FROM node:slim
+
+LABEL maintainer="Andy Mikhaylenko <neithere@gmail.com>"
+
+# for static content
+#RUN yarn global add http-server
+
+WORKDIR /usr/src/app
+
+# NOTE: tests are not copied, maybe some other useful stuff isn't either
+COPY package.json yarn.lock  ./
+COPY babel.config.js vue.config.js .postcssrc.js  ./
+COPY index.html  ./
+COPY build/ config/ dist/ public/ static/  ./
+
+RUN yarn install
+
+# NOTE: it is expected that the code is mounted to /usr/src/app
+
+CMD ["yarn", "run", "serve"]
