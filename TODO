@@ -1,0 +1,11 @@
+* PlaceViewer
+
+  * Filter by timeline (before/after)
+
+    * Challenge: no filtering by event date in RESTful API or on model level.
+      To implement, we need:
+
+      a) iterate all events and places — expensive
+      b) a complex MongoDB query
+      c) pre-build index: PlaceIdsByEventYear or something like that
+
