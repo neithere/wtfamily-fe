@@ -14,7 +14,6 @@ WORKDIR /usr/src/app
 # NOTE: tests are not copied, maybe some other useful stuff isn't either
 COPY package.json yarn.lock  ./
 COPY babel.config.js vue.config.js .postcssrc.js  ./
-COPY index.html  ./
 COPY build/ config/ dist/ public/ static/  ./
 
 RUN yarn install
