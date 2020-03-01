@@ -95,6 +95,8 @@ export default {
         Object.keys(resp.data).forEach(k => {
           this[k] = resp.data[k]
         })
+
+        this.$emit('loaded', resp.data)
       })
     }
   },

@@ -136,7 +136,7 @@ export default {
 
 .panel-viewer
   overflow: hidden
-  display: flex
+  // display: flex
 
   .main-panel
     // float: right;

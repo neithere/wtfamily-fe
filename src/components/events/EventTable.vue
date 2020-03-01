@@ -147,6 +147,7 @@ import { LControlScale, LMarker, LMap, LTileLayer, LPopup } from 'vue2-leaflet'
 
 import Event from '../../models/Event'
 
+import DebugJson from '../common/DebugJson'
 import PersonList from '../people/PersonList'
 import PlaceItem from '../places/PlaceItem'
 import CitationItem from '../sources/CitationItem'
@@ -302,6 +303,7 @@ export default {
     }
   },
   components: {
+    DebugJson,
     LControlScale,
     LMarker,
     LMap,

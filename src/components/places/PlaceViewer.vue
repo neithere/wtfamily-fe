@@ -155,6 +155,7 @@ L.Icon.Default.mergeOptions({
   shadowUrl: require('leaflet/dist/images/marker-shadow.png')
 })
 
+// TODO: use Model instead?
 const SOURCE_URL = 'http://localhost:5000/r/places/'
 
 export default {
