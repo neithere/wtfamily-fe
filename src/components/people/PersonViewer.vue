@@ -1,71 +1,63 @@
-<template>
-  <panel-viewer
-    :source-url="sourceUrl"
-    :selected-id="id"
-    title-attr="name"
-    other-names-attr="names"
-    @selected="selectItem($event)">
-    <template slot-scope="panel">
+<template lang="pug">
+panel-viewer(
+  :source-url="sourceUrl"
+  :selected-id="id"
+  title-attr="name"
+  other-names-attr="names"
+  @selected="selectItem($event)"
+)
+  template(slot-scope="panel")
+    debug-json(is-floating) {{ panel.selectedItem }}
+    div(v-if="panel.selectedItem")
+      h2
+        fa-icon(:icon="genderIcon(panel.selectedItem)")
+        |
+        | {{ panel.selectedItem.name }}
+      h3.card-subtitle.text-muted
+        small.text-muted
+          | ✶{{ panel.selectedItem.birth }}
+          |
+          template(v-if="panel.selectedItem.death") ✝{{ panel.selectedItem.death }}
+          |
+          | (age {{ panel.selectedItem.age }})
+      term(
+        label="Name variations"
+        :value="formatMultiNames(panel.selectedItem.names)"
+      )
 
-      <debug-json is-floating>{{ panel.selectedItem }}</debug-json>
+      // <term label="Pub info" :value="panel.selectedItem.pubinfo" />
+      // <term label="Abbrev" :value="panel.selectedItem.abbrev" />
+      // <term label="Repo ID" :value="panel.selectedItem.repository" />
 
-      <div v-if="panel.selectedItem">
-        <h2>
-          <fa-icon :icon="genderIcon(panel.selectedItem)"></fa-icon>
-          {{ panel.selectedItem.name }}
-        </h2>
-        <h3 class="card-subtitle text-muted">
-          <small class="text-muted">
-            ✶{{ panel.selectedItem.birth }}
-            <template v-if="panel.selectedItem.death">
-              ✝{{ panel.selectedItem.death }}
-            </template>
-            (age {{ panel.selectedItem.age }})
-          </small>
-        </h3>
-
-        <term label="Name variations"
-          :value="formatMultiNames(panel.selectedItem.names)" />
-
-        <!--
-        <term label="Pub info" :value="panel.selectedItem.pubinfo" />
-        <term label="Abbrev" :value="panel.selectedItem.abbrev" />
-        <term label="Repo ID" :value="panel.selectedItem.repository" />
-        -->
-
-        <div class="row">
-          <div class="col-6">
-            <family-card v-for="familyId in panel.selectedItem.child_in_families"
-              header="Child in family"
-              parents-header="Parents"
-              children-header="Siblings"
-              icon="child"
-              :central-person-id="panel.selectedItem.id"
-              :mention-partners="panel.selectedItem.child_in_families.length > 1"
-              :key="familyId"
-              :id="familyId" />
-          </div>
-
-          <div class="col-6">
-            <family-card v-for="familyId in panel.selectedItem.parent_in_families"
-              header="Own family"
-              parents-header="Partner"
-              children-header="Children"
-              icon="users"
-              :central-person-id="panel.selectedItem.id"
-              :mention-partners="panel.selectedItem.parent_in_families.length > 1"
-              :key="familyId"
-              :id="familyId" />
-          </div>
-        </div>
-
-        <event-table
-          :ids="panel.selectedItem.event_ids"
-          :exclude-person-id="panel.selectedItem.id" />
-
-      </div>
-    </template>
-  </panel-viewer>
+      .row
+        .col-6
+          family-card(
+            v-for="familyId in panel.selectedItem.child_in_families"
+            header="Child in family"
+            parents-header="Parents"
+            children-header="Siblings"
+            icon="child"
+            :central-person-id="panel.selectedItem.id"
+            :mention-partners="panel.selectedItem.child_in_families.length > 1"
+            :key="familyId"
+            :id="familyId"
+          )
+        .col-6
+          family-card(
+            v-for="familyId in panel.selectedItem.parent_in_families"
+            header="Own family"
+            parents-header="Partner"
+            children-header="Children"
+            icon="users"
+            :central-person-id="panel.selectedItem.id"
+            :mention-partners="panel.selectedItem.parent_in_families.length > 1"
+            :key="familyId"
+            :id="familyId"
+          )
+      event-table(
+        :ids="panel.selectedItem.event_ids"
+        :exclude-person-id="panel.selectedItem.id"
+      )
 </template>
 
 <script>

@@ -1,33 +1,30 @@
-<template>
-  <div class="panel-viewer">
-    <div class="side-panel" :class="sidePanelGridClass">
-      <div v-if="!objectList.length">
-        <span class="fas fa-circle-notch fa-spin fa-5x"></span>
-      </div>
-      <div v-if="objectList.length">
-        <p>
-          <input v-model="query" type="search" class="query" name="query"
-            placeholder="Filter items">
-        </p>
-        <ul class="list-group">
-          <template v-for="item in sortedObjectList">
-            <li v-if="matchesQuery(item)"
-              @click="publishSelectedItem(item)"
-              :key="item.id"
-              :class="{'list-group-item': true, active: item.id === selectedId}">
-              {{ item[titleAttr] }}
-            </li>
-          </template>
-        </ul>
-      </div>
-    </div>
-    <div class="main-panel container-fluid" :class="mainPanelGridClass">
-      <slot
-        :items="sortedObjectList"
-        :selected-item="selectedItem">
-      </slot>
-    </div>
-  </div>
+<template lang="pug">
+.panel-viewer
+  .side-panel(:class="sidePanelGridClass")
+    div(v-if="!objectList.length")
+      span.fas.fa-circle-notch.fa-spin.fa-5x
+    div(v-else)
+      p
+        input(
+          v-model="query"
+          type="search"
+          class="query"
+          name="query"
+          placeholder="Filter items"
+        )
+      ul.list-group
+        template(v-for="item in sortedObjectList")
+          li(
+            v-if="matchesQuery(item)"
+            @click="publishSelectedItem(item)"
+            :key="item.id"
+            :class="{'list-group-item': true, active: item.id === selectedId}"
+          ) {{ item[titleAttr] }}
+  .main-panel.container-fluid( :class="mainPanelGridClass" )
+    slot(
+      :items="sortedObjectList"
+      :selected-item="selectedItem"
+    )
 </template>
 
 <script>

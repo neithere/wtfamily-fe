@@ -1,41 +1,29 @@
-<template>
-  <popper trigger="hover" :options="{placement: 'top-start'}">
-
-    <div class="popper card">
-      <div class="card-body">
-        <h6 v-if="source" class="card-subtitle text-muted">{{ source.title }}</h6>
-        <h5 class="card-title">
-          <fa-icon :icon="['far', 'sticky-note']"></fa-icon>
-          {{ page }}
-        </h5>
-        <div v-if="notes">
-          <p class="card-text"
-            style="text-align: left; max-height: 50vh; overflow: auto;"
-            v-for="(note, index) in notes"
-            :key="index">
-            {{ note.text }}
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <abbr title="" slot="reference">
-      <template v-if="source">
-        <fa-icon :icon="['far', 'sticky-note']"></fa-icon>
-        <router-link
-          :to="{name: 'source.detail', params: {id: sourceId}}"
-          :title="source.title">
-          {{ source.abbrev || source.title }},
-          {{ page }}
-        </router-link>
-      </template>
-      <template v-else>
-        {{ page }} (source loading...)
-      </template>
-
-    </abbr>
-
-  </popper>
+<template lang="pug">
+popper(trigger="hover" :options="{ placement: 'top-start' }")
+  .popper.card
+    .card-body
+      h6.card-subtitle.text-muted(v-if="source") {{ source.title }}
+      h5.card-title
+        fa-icon(:icon="['far', 'sticky-note']")
+        |
+        | {{ page }}
+      div(v-if="notes")
+        p.card-text(
+          style="text-align: left; max-height: 50vh; overflow: auto;"
+          v-for="(note, index) in notes"
+          :key="index"
+        ) {{ note.text }}
+  abbr(title="" slot="reference")
+    template(v-if="source")
+      fa-icon(:icon="['far', 'sticky-note']")
+      router-link(
+        :to="{name: 'source.detail', params: {id: sourceId}}"
+        :title="source.title"
+      )
+      |
+      | {{ source.abbrev || source.title }}, {{ page }}
+    template(v-else)
+      | {{ page }} (source loading...)
 </template>
 
 <script>

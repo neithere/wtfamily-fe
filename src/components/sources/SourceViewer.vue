@@ -1,21 +1,21 @@
-<template>
-  <panel-viewer wide-side-panel
+<template lang="pug">
+  panel-viewer(
+    wide-side-panel
     :source-url="sourceUrl"
     :selected-id="id"
-    @selected="selectItem($event)">
-    <template slot-scope="panel">
-      <div v-if="panel.selectedItem">
-        <h2><span class="fas fa-book"></span> {{ panel.selectedItem.title }}</h2>
+    @selected="selectItem($event)"
+  )
+    template(slot-scope="panel")
+      div(v-if="panel.selectedItem")
+        h2
+          span.fas.fa-book {{ panel.selectedItem.title }}
 
-        <term label="Author" :value="panel.selectedItem.author" />
-        <term label="Pub info" :value="panel.selectedItem.pubinfo" />
-        <term label="Abbrev" :value="panel.selectedItem.abbrev" />
-        <term label="Repo ID" :value="panel.selectedItem.repository" />
+        term(label="Author" :value="panel.selectedItem.author")
+        term(label="Pub info" :value="panel.selectedItem.pubinfo")
+        term(label="Abbrev" :value="panel.selectedItem.abbrev")
+        term(label="Repo ID" :value="panel.selectedItem.repository")
 
-        <citation-list :source-id="panel.selectedItem.id" />
-      </div>
-    </template>
-  </panel-viewer>
+        citation-list(:source-id="panel.selectedItem.id")
 </template>
 
 <script>

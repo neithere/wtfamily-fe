@@ -1,10 +1,8 @@
-<template>
-  <div class="note" :title="id">
-    <!--span class="fas fa-quote-left"></span-->
-    <p class="note-text" v-if="text" :title="type">{{ text }}</p>
-    <!--span class="fas fa-quote-right"></span-->
-    {{ media }}
-  </div>
+<template lang="pug">
+  .note(:title="id")
+    p.note-text(v-if="text" :title="type") {{ text }}
+    |
+    | {{ media }}
 </template>
 
 <script>

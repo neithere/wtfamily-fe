@@ -1,50 +1,42 @@
-<template>
-  <popper
-    trigger="hover"
-    :options="{placement: 'top-start'}"
-    @show="visible = true"
-    @hide="visible = false">
+<template lang="pug">
+popper(
+  trigger="hover"
+  :options="{placement: 'top-start'}"
+  @show="visible = true"
+  @hide="visible = false"
+)
+  .popper.card
+    .card-body
+      h5.card-title
+        span.fas.fa-map-marker-alt
+        |
+        | {{ name }}
+      h6.card-subtitle.text-muted TODO: parent places: {{ parent_place_ids }}
+      p.card-text(v-if="otherNames")
+        | AKA:
+        |
+        span.item(v-for="(otherName, index) in otherNames" :key="index") {{ otherName }}
+      p.card-text
+        l-map(
+          v-if="visible && coords"
+          ref="map"
+          :center="coords"
+          :zoom="mapZoom"
+          style="width: 400px; height: 200px;"
+        )
+          l-tile-layer(
+            :name="mapTileLayerName"
+            :url="mapTileLayerURL"
+            :attribution="mapTileLayerAttribution"
+          )
+          l-marker(
+            :lat-lng="coords"
+            :title="name"
+          )
 
-    <div class="popper card">
-      <div class="card-body">
-        <h5 class="card-title">
-          <span class="fas fa-map-marker-alt"></span>
-          {{ name }}
-        </h5>
-        <h6 class="card-subtitle text-muted">TODO: parent places: {{ parent_place_ids }}</h6>
-        <p class="card-text" v-if="otherNames">
-          AKA:
-          <span
-            v-for="(otherName, index) in otherNames" :key="index"
-            class="item">{{ otherName }}</span>
-        </p>
-        <p class="card-text">
-          <l-map ref="map"
-            v-if="visible && coords"
-            :center="coords"
-            :zoom="mapZoom"
-            style="width: 400px; height: 200px;">
-            <l-tile-layer
-              :name="mapTileLayerName"
-              :url="mapTileLayerURL"
-              :attribution="mapTileLayerAttribution" />
-            <l-marker
-              :lat-lng="coords"
-              :title="name">
-            </l-marker>
-          </l-map>
-        </p>
-      </div>
-    </div>
-
-    <abbr title="" slot="reference">
-      <span class="fas fa-map-marker-alt"></span>
-      <router-link :to="{name: 'place.detail', params: {id: id}}">
-        {{ name }}
-      </router-link>
-    </abbr>
-
-  </popper>
+  abbr(title="" slot="reference")
+    span.fas.fa-map-marker-alt
+    router-link(:to="{name: 'place.detail', params: {id: id}}") {{ name }}
 </template>
 
 <script>

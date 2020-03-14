@@ -1,74 +1,67 @@
-<template>
-  <panel-viewer
-    :source-url="sourceUrl"
-    :selected-id="id"
-    title-attr="name"
-    @selected="selectItem($event)">
+<template lang="pug">
+panel-viewer(
+  :source-url="sourceUrl"
+  :selected-id="id"
+  title-attr="name"
+  @selected="selectItem($event)"
+)
+  template(slot-scope="panel")
+    // <input type="checkbox" id="show_marker_labels" v-model="showMarkerLabels">
+    // <label for="show_marker_labels">Show marker labels</label>
 
-    <template slot-scope="panel">
-      <!--
-      <input type="checkbox" id="show_marker_labels" v-model="showMarkerLabels">
-      <label for="show_marker_labels">Show marker labels</label>
-      -->
+    l-map(
+      ref="map"
+      :center="panel.selectedItem && panel.selectedItem.coords || defaultCoords"
+      :zoom="zoom"
+      :options="mapOptions"
+      @update:zoom="zoom = $event"
+      style="width: 100%; height: 50vh;"
+    )
+      l-control-layers(position="topright")
+      l-control-scale(position="bottomright" :imperial="false")
 
-      <l-map ref="map"
-        :center="panel.selectedItem && panel.selectedItem.coords || defaultCoords"
-        :zoom="zoom"
-        :options="mapOptions"
-        @update:zoom="zoom = $event"
-        style="width: 100%; height: 50vh;">
+      l-tile-layer(
+        v-for="tileProvider in tileProviders"
+        :key="tileProvider.name"
+        :name="tileProvider.name"
+        :visible="tileProvider.visible"
+        :url="tileProvider.url"
+        :attribution="tileProvider.attribution"
+        layer-type="base"
+      )
 
-        <l-control-layers position="topright"  ></l-control-layers>
-        <l-control-scale position="bottomright" :imperial="false"></l-control-scale>
+      template(v-for="(item, index) in panel.items")
+        //-
+          TODO: detect non-point elems (cities, regions, countries) and
+          draw a circle instead of the default marker.  There's `l-circle`
+          (fixed radius) and `l-circle-marker` (just a shaped marker).
 
-        <l-tile-layer
-          v-for="tileProvider in tileProviders"
-          :key="tileProvider.name"
-          :name="tileProvider.name"
-          :visible="tileProvider.visible"
-          :url="tileProvider.url"
-          :attribution="tileProvider.attribution"
-          layer-type="base" />
+          Perhaps set a flat on backend depending on place type and/or ask
+          user to explicitly define a custom attribute?
+        //
+        l-marker(
+          v-if="item.coords"
+          :key="index"
+          :lat-lng="item.coords"
+          :title="item.name"
+          :icon="item.icon"
+          @click="selectItem(item)"
+        )
 
-        <template v-for="(item, index) in panel.items">
-          <!-- TODO: detect non-point elems (cities, regions, countries) and
-               draw a circle instead of the default marker.  There's `l-circle`
-               (fixed radius) and `l-circle-marker` (just a shaped marker).
+          l-icon(
+            v-if="panel.selectedItem === item"
+            :icon-url="markerSelectedURL"
+          )
 
-               Perhaps set a flat on backend depending on place type and/or ask
-               user to explicitly define a custom attribute?
-          -->
-          <l-marker
-            v-if="item.coords"
-            :key="index"
-            :lat-lng="item.coords"
-            :title="item.name"
-            :icon="item.icon"
-            @click="selectItem(item)">
+          l-tooltip(:options="{permanent: false, interactive: true}")
+            strong {{ item.name }}
+            p(v-if="item.other_names.length")
+              | Also known as:
+              |
+              ul
+                li(v-for="(altName, altNameIndex) in item.other_names" :key="altNameIndex") {{ altName }}
 
-            <l-icon
-              v-if="panel.selectedItem === item"
-              :icon-url="markerSelectedURL"></l-icon>
-
-            <l-tooltip :options="{permanent: false, interactive: true}">
-              <strong>{{ item.name }}</strong>
-              <p v-if="item.other_names.length">
-                Also known as:
-                <ul>
-                  <li
-                    v-for="(altName, altNameIndex) in item.other_names"
-                    :key="altNameIndex">
-                    {{ altName }}
-                  </li>
-                </ul>
-              </p>
-            </l-tooltip>
-
-          </l-marker>
-        </template>
-      </l-map>
-
-      <!--
+    //-
       <gmap-map
         :center="panel.selectedItem && panel.selectedItem.coords || defaultCoords"
         :zoom="10"
@@ -88,50 +81,50 @@
         </div>
 
       </gmap-map>
-      -->
+    //
 
-      <div v-if="panel.selectedItem">
+    div(v-if="panel.selectedItem")
 
-        <debug-json is-floating>{{ panel.selectedItem }}</debug-json>
+      debug-json(is-floating) {{ panel.selectedItem }}
 
-        <h2>
-          <span class="fas fa-map-marker-alt"></span> {{ panel.selectedItem.name }}
-          <small class="text-muted" v-if="panel.selectedItem.coords">
-            {{ panel.selectedItem.coords.lat }}
-            {{ panel.selectedItem.coords.lng }}
-          </small>
-        </h2>
+      h2
+        span.fas.fa-map-marker-alt {{ panel.selectedItem.name }}
+        small.text-muted(v-if="panel.selectedItem.coords")
+          |
+          | {{ panel.selectedItem.coords.lat }}
+          | {{ panel.selectedItem.coords.lng }}
 
-        <!-- NOTE
-          these are *direct* parents; yes, there can be multiple such places,
-          e.g. historically волость → район.  We do *not* show the full
-          breadcrumbs here.
-        -->
-        <div class="direct-parent-places"
-          v-if="panel.selectedItem.parent_place_ids">
-          Direct parents:
-          <place-item class="direct-parent-places-item"
-            v-for="placeId in panel.selectedItem.parent_place_ids"
-            :key="placeId"
-            :id="placeId" />
-        </div>
+      //-
+        NOTE
+        these are *direct* parents; yes, there can be multiple such places,
+        e.g. historically волость → район.  We do *not* show the full
+        breadcrumbs here.
+      //
 
-        <term label="Other names"
-          :value="formatMultiNames(panel.selectedItem.other_names)" />
-        <!--
+      .direct-parent-places(v-if="panel.selectedItem.parent_place_ids")
+        | Direct parents:
+        |
+        place-item.direct-parent-places-item(
+          v-for="placeId in panel.selectedItem.parent_place_ids"
+          :key="placeId"
+          :id="placeId"
+        )
+
+      term(
+        label="Other names"
+        :value="formatMultiNames(panel.selectedItem.other_names)"
+      )
+      //-
         <term label="Pub info" :value="selectedItem.pubinfo" />
         <term label="Abbrev" :value="selectedItem.abbrev" />
         <term label="Repo ID" :value="selectedItem.repository" />
-        -->
-
-        <event-table
-          v-if="panel.selectedItem"
-          :place-id="panel.selectedItem.id"
-          no-place
-          no-header />
-      </div>
-    </template>
-  </panel-viewer>
+      //
+      event-table(
+        v-if="panel.selectedItem"
+        :place-id="panel.selectedItem.id"
+        no-place
+        no-header
+      )
 </template>
 
 <script>

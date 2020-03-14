@@ -1,47 +1,27 @@
-<template>
-  <div class="card">
-    <div class="card-body">
-      <h5 class="card-title">
-        <fa-icon
-          v-if="icon"
-          :icon="icon"></fa-icon>
-        {{ header }}
-        <!-- span v-if="mentionPartners">({{ partnerNames }})</span -->
-      </h5>
-
-      <template v-if="object">
-        <div v-if="partnerIds && partnerIds.length">
-          <h6>{{ parentsHeader }}</h6>
-          <person-list
-            :ids="partnerIds" />
-        </div>
-        <div v-if="childIds && childIds.length">
-          <h6>{{ childrenHeader }}</h6>
-          <person-list
-            :ids="childIds"
-            no-patronymic />
-        </div>
-
-        <event-table
-          v-if="object.event_ids"
-          :ids="object.event_ids" />
-
-        <p v-if="object.attributes">TODO: attributes {{ object.attributes }}</p>
-
-        <p v-if="object.citation_ids">
-          <citation-item
-            v-for="citationId in object.citation_ids"
-            :id="citationId"
-            :key="citationId"
-            no-events />
-        </p>
-
-        <p v-if="object.note_ids">TODO: note-list {{ object.note_ids }}</p>
-      </template>
-
-      <debug-json>{{ object }}</debug-json>
-    </div>
-  </div>
+<template lang="pug">
+.card
+  .card-body
+    h5.card-title
+      debug-json(is-floating) {{ object }}
+      fa-icon(v-if="icon" :icon="icon") {{ header }}
+      // <span v-if="mentionPartners">({{ partnerNames }})</span>
+    template(v-if="object")
+      div(v-if="partnerIds && partnerIds.length")
+        h6 {{ parentsHeader }}
+        person-list(:ids="partnerIds")
+      div(v-if="childIds && childIds.length")
+        h6 {{ childrenHeader }}
+        person-list(:ids="childIds" no-patronymic)
+      event-table(v-if="object.event_ids" :ids="object.event_ids")
+      p(v-if="object.attributes") TODO: attributes {{ object.attributes }}
+      p(v-if="object.citation_ids")
+        citation-item(
+          v-for="citationId in object.citation_ids"
+          :id="citationId"
+          :key="citationId"
+          no-events
+        )
+      p(v-if="object.note_ids") TODO: note-list {{ object.note_ids }}
 </template>
 
 <script>

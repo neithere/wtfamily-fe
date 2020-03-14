@@ -1,11 +1,12 @@
-<template>
-  <div>
-    <citation v-for="citation in object_list"
-      :key="citation.id"
-      :id="citation.id"
-      :page="citation.page"
-      :note-ids="citation.note_ids" />
-  </div>
+<template lang="pug">
+div
+  citation(
+    v-for="citation in object_list"
+    :key="citation.id"
+    :id="citation.id"
+    :page="citation.page"
+    :note-ids="citation.note_ids"
+  )
 </template>
 
 <script>

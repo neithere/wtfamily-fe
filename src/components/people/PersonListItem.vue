@@ -1,37 +1,29 @@
-<template>
-  <popper trigger="hover"
+<template lang="pug">
+  popper(
+    trigger="hover"
     :options="{placement: 'top-start'}"
-    @show="shownAtLeastOnce = true">
+    @show="shownAtLeastOnce = true"
+  )
+    // "card" makes items jump due to flex?
+    div.popper
+      .card-body
+        h5.card-title
+          fa-icon(:icon="genderIcon") {{ person.name }}
+        h6.card-subtitle.text-muted
+        |
+        | {{ person.birth }} — {{ person.death }} (age ≈{{ person.age }})
+        p.card-text(v-if="names.length > 1")
+          span.item(v-for="(altName, index) in names" :key="index") {{ altName }}
+        // <a href="#" class="card-link">view card</a>
+        // <a href="#" class="card-link">view in tree</a>
 
-    <div class="popper">  <!-- "card" makes items jump due to flex? -->
-      <div class="card-body">
-        <h5 class="card-title">
-          <fa-icon :icon="genderIcon"></fa-icon>
-          {{ person.name }}
-        </h5>
-        <h6 class="card-subtitle text-muted">
-          {{ person.birth }} — {{ person.death }} (age ≈{{ person.age }})
-        </h6>
-        <p class="card-text" v-if="names.length > 1">
-          <span v-for="(altName, index) in names" :key="index"
-            class="item">{{ altName }}</span>
-        </p>
-        <!--
-        <a href="#" class="card-link">view card</a>
-        <a href="#" class="card-link">view in tree</a>
-        -->
-      </div>
-    </div>
-
-    <abbr title="" slot="reference">
-      <fa-icon :icon="genderIcon"></fa-icon>
-      <router-link :to="{name: 'person.detail', params: {id: person.id}}">
-        {{ name }}
-        <template v-if="!noDate">({{ person.birth }})</template>
-      </router-link>
-    </abbr>
-
-  </popper>
+    abbr(title="" slot="reference")
+      fa-icon(:icon="genderIcon")
+      router-link(:to="{name: 'person.detail', params: {id: person.id}}")
+        |
+        | {{ name }}
+        |
+        template(v-if="!noDate") ({{ person.birth }})
 </template>
 
 <script>

@@ -1,26 +1,31 @@
-<template>
-  <div class="card">
-    <div class="card-header">
-        <span class="fas fa-sticky-note"></span> {{ page }}
-    </div>
-    <div class="card-body">
-      <div class="alert alert-warning" role="alert"
-        v-if="!noteIds">
-        <strong>Missing notes.</strong>
-        Please add a source transcript or research summary.
-      </div>
-      <note v-for="noteId in noteIds"
-        class="card-text"
-        :key="noteId"
-        :id="noteId" />
-    </div>
-    <event-table :citation-id="id" no-header>
-      <div slot="no-data" class="alert alert-info">
-        <strong>Missing inferred facts.</strong>
-        This citation may need some research.
-      </div>
-    </event-table>
-  </div>
+<template lang="pug">
+.card
+  .card-header
+      span.fas.fa-sticky-note
+      |
+      | {{ page }}
+  .card-body
+    .alert.alert-warning(
+      v-if="!noteIds"
+      role="alert"
+    )
+      strong Missing notes.
+      |
+      | Please add a source transcript or research summary.
+    note(
+      v-for="noteId in noteIds"
+      class="card-text"
+      :key="noteId"
+      :id="noteId"
+    )
+  event-table(
+    :citation-id="id"
+    no-header
+  )
+    .alert.alert-info(slot="no-data")
+      strong Missing inferred facts.
+      |
+      | This citation may need some research.
 </template>
 
 <script>

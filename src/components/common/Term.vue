@@ -1,8 +1,7 @@
-<template>
-  <dl class="row" v-show="value">
-    <dt class="col-sm-2">{{ label }}</dt>
-    <dd class="col-sm-10">{{ value }}</dd>
-  </dl>
+<template lang="pug">
+dl.row(v-show="value")
+  dt.col-sm-2 {{ label }}
+  dd.col-sm-10 {{ value }}
 </template>
 
 <script>
