@@ -1,87 +1,87 @@
 <template lang="pug">
-  div
-    .map-section(v-if="!placeId && placesWithCoords.length")
-      l-map(
-        ref="map"
-        :zoom="mapZoom"
-        :min-zoom="mapMinZoom"
-        :max-zoom="mapMaxZoom"
-        :bounds="mapBounds"
-        :padding="mapPadding"
-        style="width: 100%; height: 400px;"
-      )
-        l-control-scale(position="bottomright" :imperial="false")
-        l-tile-layer(
-          :name="mapTileLayerName"
-          :url="mapTileLayerURL"
-          :attribution="mapTileLayerAttribution"
-        )
-        template(v-for="(placeData, _placeId) in places")
-          l-marker(
-            v-if="placeData.coords"
-            :key="_placeId"
-            :lat-lng="placeData.coords"
-            :title="placeData.name"
-          )
-            l-popup.place-popup
-              strong {{ placeData.name }}
-              ul.place-popup-event-list
-                li.place-popup-event-list-item(
-                  v-for="event in eventsByPlace[_placeId]"
-                  :key="event.id"
-                )
-                  span.place-popup-event-list-item-col {{ event.date }} — {{ event.type }}
-                  person-list.place-popup-event-list-item-col.place-popup-event-list-item-person-list(
-                    v-if="!personId && !noPeople"
-                    :event-id="event.id"
-                    :exclude-person-id="excludePersonId"
-                    inline
-                    brief
-                  )
-    table.table.table-hover.table-event.mb-0
-      thead(v-if="!noHeader")
-        th(v-if="showId" scope="col" title="Event id")
-          span.fas.fa-list-ol
-        th(scope="col" title="Event date")
-          span.fas.fa-calendar
-        th(v-if="!noPlace" scope="col" title="Event place")
-          span.fas.fa-map-marker-alt
-        th(scope="col" title="Event type")
-          span.fas.fa-clipboard-list
-        th(v-if="!noPeople" scope="col" title="People related to the event")
-          span.fas.fa-users
-        th(v-if="!noDescription" scope="col" title="Event description and citations")
-          span.fas.fa-quote-right
-      tbody
-        tr(v-for="event in object_list" :key="event.id")
-          th(scope="row" v-if="showId") {{ event.id }}
-          td(scope="col") {{ event.date.replace(' ', '&nbsp') }}
-            debug-json(is-floating) {{ event }}
-          td(scope="col" v-if="!noPlace")
-           place-item(
-             v-if="event.place_id"
-             :id="event.place_id"
-             @loaded="addPlaceToMap"
-           )
-          td(scope="col") {{ event.type }}
-          td(v-if="!noPeople" scope="col")
-            person-list(
-              inline
-              :event-id="event.id"
-              :exclude-person-id="excludePersonId"
-            )
-          td.cell-summary(v-if="!noDescription" scope="col")
-            p.small {{ event.summary }}
-            ul.list-inline(v-if="!noCitations && event.citation_ids")
-              li.list-inline-item(
-                v-for="citationId in event.citation_ids"
-                :key="citationId"
-              )
-                citation-item(:id="citationId")
-    slot(
-      v-if="!object_list || !object_list.length"
-      name="no-data"
+div
+  .map-section(v-if="!placeId && placesWithCoords.length")
+    l-map(
+      ref="map"
+      :zoom="mapZoom"
+      :min-zoom="mapMinZoom"
+      :max-zoom="mapMaxZoom"
+      :bounds="mapBounds"
+      :padding="mapPadding"
+      style="width: 100%; height: 400px;"
     )
+      l-control-scale(position="bottomright" :imperial="false")
+      l-tile-layer(
+        :name="mapTileLayerName"
+        :url="mapTileLayerURL"
+        :attribution="mapTileLayerAttribution"
+      )
+      template(v-for="(placeData, _placeId) in places")
+        l-marker(
+          v-if="placeData.coords"
+          :key="_placeId"
+          :lat-lng="placeData.coords"
+          :title="placeData.name"
+        )
+          l-popup.place-popup
+            strong {{ placeData.name }}
+            ul.place-popup-event-list
+              li.place-popup-event-list-item(
+                v-for="event in eventsByPlace[_placeId]"
+                :key="event.id"
+              )
+                span.place-popup-event-list-item-col {{ event.date }} — {{ event.type }}
+                person-list.place-popup-event-list-item-col.place-popup-event-list-item-person-list(
+                  v-if="!personId && !noPeople"
+                  :event-id="event.id"
+                  :exclude-person-id="excludePersonId"
+                  inline
+                  brief
+                )
+  table.table.table-hover.table-event.mb-0
+    thead(v-if="!noHeader")
+      th(v-if="showId" scope="col" title="Event id")
+        span.fas.fa-list-ol
+      th(scope="col" title="Event date")
+        span.fas.fa-calendar
+      th(v-if="!noPlace" scope="col" title="Event place")
+        span.fas.fa-map-marker-alt
+      th(scope="col" title="Event type")
+        span.fas.fa-clipboard-list
+      th(v-if="!noPeople" scope="col" title="People related to the event")
+        span.fas.fa-users
+      th(v-if="!noDescription" scope="col" title="Event description and citations")
+        span.fas.fa-quote-right
+    tbody
+      tr(v-for="event in object_list" :key="event.id")
+        th(scope="row" v-if="showId") {{ event.id }}
+        td(scope="col") {{ event.date.replace(' ', '&nbsp') }}
+          debug-json(is-floating) {{ event }}
+        td(scope="col" v-if="!noPlace")
+         place-item(
+           v-if="event.place_id"
+           :id="event.place_id"
+           @loaded="addPlaceToMap"
+         )
+        td(scope="col") {{ event.type }}
+        td(v-if="!noPeople" scope="col")
+          person-list(
+            inline
+            :event-id="event.id"
+            :exclude-person-id="excludePersonId"
+          )
+        td.cell-summary(v-if="!noDescription" scope="col")
+          p.small {{ event.summary }}
+          ul.list-inline(v-if="!noCitations && event.citation_ids")
+            li.list-inline-item(
+              v-for="citationId in event.citation_ids"
+              :key="citationId"
+            )
+              citation-item(:id="citationId")
+  slot(
+    v-if="!object_list || !object_list.length"
+    name="no-data"
+  )
 </template>
 
 <script>

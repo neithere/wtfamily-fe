@@ -1,16 +1,16 @@
 <template lang="pug">
-  ul(:class="{'list-inline': inline}")
-    template(v-for="person in object_list")
-      li(
-        v-if="person.id !== excludePersonId"
-        :key="person.id"
-        :class="{'list-inline-item': inline}"
+ul(:class="{'list-inline': inline}")
+  template(v-for="person in object_list")
+    li(
+      v-if="person.id !== excludePersonId"
+      :key="person.id"
+      :class="{'list-inline-item': inline}"
+    )
+      person-list-item(
+        :person-data="person"
+        :no-patronymic="noPatronymic || brief"
+        :no-date="brief"
       )
-        person-list-item(
-          :person-data="person"
-          :no-patronymic="noPatronymic || brief"
-          :no-date="brief"
-        )
 </template>
 
 <script>

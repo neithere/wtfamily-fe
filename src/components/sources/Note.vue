@@ -1,8 +1,8 @@
 <template lang="pug">
-  .note(:title="id")
-    p.note-text(v-if="text" :title="type") {{ text }}
-    |
-    | {{ media }}
+.note(:title="id")
+  p.note-text(v-if="text" :title="type") {{ text }}
+  |
+  | {{ media }}
 </template>
 
 <script>
