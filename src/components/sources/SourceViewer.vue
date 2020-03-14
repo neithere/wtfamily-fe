@@ -9,12 +9,7 @@ panel-viewer(
     div(v-if="panel.selectedItem")
       h2
         span.fas.fa-book {{ panel.selectedItem.title }}
-
-      term(label="Author" :value="panel.selectedItem.author")
-      term(label="Pub info" :value="panel.selectedItem.pubinfo")
-      term(label="Abbrev" :value="panel.selectedItem.abbrev")
-      term(label="Repo ID" :value="panel.selectedItem.repository")
-
+      term-list(:terms="getTermsFor(panel)")
       citation-list(:source-id="panel.selectedItem.id")
 </template>
 
@@ -23,7 +18,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import PanelViewer from '../common/PanelViewer'
-import Term from '../common/Term'
+import TermList from '../common/TermList'
 import CitationList from './CitationList'
 
 Vue.use(Router)
@@ -52,12 +47,20 @@ export default {
         name: 'source.detail',
         params: { id: item.id }
       })
+    },
+    getTermsFor (panel) {
+      return [
+        { value: panel.selectedItem.author, label: 'Author' },
+        { value: panel.selectedItem.pubinfo, label: 'Pub info' },
+        { value: panel.selectedItem.abbrev, label: 'Abbrev' },
+        { value: panel.selectedItem.repository, label: 'Repo ID' },
+      ]
     }
   },
   components: {
     PanelViewer,
     CitationList,
-    Term
+    TermList
   }
 }
 </script>
