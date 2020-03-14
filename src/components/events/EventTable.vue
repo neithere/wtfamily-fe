@@ -55,7 +55,8 @@
       tbody
         tr(v-for="event in object_list" :key="event.id")
           th(scope="row" v-if="showId") {{ event.id }}
-          td(scope="col") {{ event.date }}
+          td(scope="col") {{ event.date.replace(' ', '&nbsp') }}
+            debug-json(is-floating) {{ event }}
           td(scope="col" v-if="!noPlace")
            place-item(
              v-if="event.place_id"
@@ -87,6 +88,8 @@
 import { LControlScale, LMarker, LMap, LTileLayer, LPopup } from 'vue2-leaflet'
 
 import Event from '../../models/Event'
+
+import DebugJson from '../common/DebugJson'
 
 import PersonList from '../people/PersonList'
 import PlaceItem from '../places/PlaceItem'
@@ -231,6 +234,7 @@ export default {
     LMap,
     LTileLayer,
     LPopup,
+    DebugJson,
     PersonList,
     PlaceItem,
     CitationItem
@@ -240,7 +244,8 @@ export default {
 
 <style lang="sass" scoped>
 
-.table-event td
-  font-size: 90%
+.table-event
+  td
+    font-size: 90%
 
 </style>

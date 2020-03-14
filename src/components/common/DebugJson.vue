@@ -48,7 +48,7 @@ export default {
     background: #ffffcc
 
     &-floating
-      float: right
+      position: absolute
       opacity: .5
 
       &:hover

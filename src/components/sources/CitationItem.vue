@@ -9,7 +9,6 @@ popper(trigger="hover" :options="{ placement: 'top-start' }")
         | {{ page }}
       div(v-if="notes")
         p.card-text(
-          style="text-align: left; max-height: 50vh; overflow: auto;"
           v-for="(note, index) in notes"
           :key="index"
         ) {{ note.text }}
@@ -20,8 +19,8 @@ popper(trigger="hover" :options="{ placement: 'top-start' }")
         :to="{name: 'source.detail', params: {id: sourceId}}"
         :title="source.title"
       )
-      |
-      | {{ source.abbrev || source.title }}, {{ page }}
+        |
+        | {{ source.abbrev || source.title }}, {{ page }}
     template(v-else)
       | {{ page }} (source loading...)
 </template>
@@ -68,6 +67,7 @@ export default {
 
         if (this.sourceId) {
           let sourceURL = SOURCES_BASE_URL + this.sourceId
+
           Axios.get(sourceURL).then(resp => {
             this.source = resp.data
           })
@@ -75,6 +75,7 @@ export default {
 
         if (this.noteIds) {
           let notesURL = NOTES_BASE_URL + '?ids=' + this.noteIds.join(',')
+
           Axios.get(notesURL).then(resp => {
             this.notes = resp.data
           })
@@ -91,6 +92,14 @@ export default {
 <style lang="sass" scoped>
   .popper.card
     max-width: 500px
+    text-align: left
+
+    .card-body
+      max-height: 50vh
+      overflow: auto
+
+      .card-text
+        padding-bottom: 1rem
 
   .item + .item:before
     content: "; "
