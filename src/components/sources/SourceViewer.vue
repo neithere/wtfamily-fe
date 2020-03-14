@@ -53,7 +53,7 @@ export default {
         { value: panel.selectedItem.author, label: 'Author' },
         { value: panel.selectedItem.pubinfo, label: 'Pub info' },
         { value: panel.selectedItem.abbrev, label: 'Abbrev' },
-        { value: panel.selectedItem.repository, label: 'Repo ID' },
+        { value: panel.selectedItem.repository, label: 'Repo ID' }
       ]
     }
   },
