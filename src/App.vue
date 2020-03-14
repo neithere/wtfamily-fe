@@ -1,43 +1,35 @@
-<template>
-  <div id="app">
-    <header>
-      <b-navbar toggleable="md" type="light">
+<template lang="pug">
+#app
+  header
+    b-navbar(toggleable="md" type="light")
+      b-navbar-brand
+        router-link(class="navbar-brand" :to="{name: 'home'}") WhatTheFamily
+      b-navbar-toggle(target="nav_collapse")
+      b-collapse(is-nav visible id="nav_collapse")
+        b-navbar-nav
+          b-nav-item(:to="{name: 'source.list'}")
+            fa-icon(icon="book")
+            |
+            | Sources
 
-        <b-navbar-brand>
-          <router-link class="navbar-brand" :to="{name: 'home'}">WhatTheFamily</router-link>
-        </b-navbar-brand>
+          b-nav-item(:to="{name: 'person.list'}")
+            fa-icon(icon="users")
+            |
+            | People
 
-        <b-navbar-toggle target="nav_collapse"></b-navbar-toggle>
+          b-nav-item(:to="{name: 'place.list'}")
+            fa-icon(icon="globe")
+            |
+            | Places
+  article
+    router-view
 
-        <b-collapse is-nav visible id="nav_collapse">
-          <b-navbar-nav>
-
-            <b-nav-item :to="{name: 'source.list'}">
-              <fa-icon icon="book"></fa-icon> Sources
-            </b-nav-item>
-
-            <b-nav-item :to="{name: 'person.list'}">
-              <fa-icon icon="users"></fa-icon> People
-            </b-nav-item>
-
-            <b-nav-item :to="{name: 'place.list'}">
-              <fa-icon icon="globe"></fa-icon> Places
-            </b-nav-item>
-
-          </b-navbar-nav>
-        </b-collapse>
-
-      </b-navbar>
-    </header>
-    <article>
-      <router-view></router-view>
-    </article>
-    <!--
+//-
     <footer>
       (this is footer)
     </footer>
-    -->
   </div>
+//
 </template>
 
 <script>
