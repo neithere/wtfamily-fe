@@ -7,7 +7,7 @@
     @selected="selectItem($event)">
     <template slot-scope="panel">
 
-      <debug-json>{{ panel.selectedItem }}</debug-json>
+      <debug-json is-floating>{{ panel.selectedItem }}</debug-json>
 
       <div v-if="panel.selectedItem">
         <h2>

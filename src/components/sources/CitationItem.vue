@@ -10,7 +10,7 @@
         </h5>
         <div v-if="notes">
           <p class="card-text"
-            style="text-align: left;"
+            style="text-align: left; max-height: 50vh; overflow: auto;"
             v-for="(note, index) in notes"
             :key="index">
             {{ note.text }}

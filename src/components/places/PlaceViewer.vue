@@ -91,6 +91,9 @@
       -->
 
       <div v-if="panel.selectedItem">
+
+        <debug-json is-floating>{{ panel.selectedItem }}</debug-json>
+
         <h2>
           <span class="fas fa-map-marker-alt"></span> {{ panel.selectedItem.name }}
           <small class="text-muted" v-if="panel.selectedItem.coords">
@@ -120,8 +123,6 @@
         <term label="Abbrev" :value="selectedItem.abbrev" />
         <term label="Repo ID" :value="selectedItem.repository" />
         -->
-
-        <debug-json>{{ panel.selectedItem }}</debug-json>
 
         <event-table
           v-if="panel.selectedItem"
