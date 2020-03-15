@@ -36,7 +36,7 @@ panel-viewer(
           draw a circle instead of the default marker.  There's `l-circle`
           (fixed radius) and `l-circle-marker` (just a shaped marker).
 
-          Perhaps set a flat on backend depending on place type and/or ask
+          Perhaps set a flag on backend depending on place type and/or ask
           user to explicitly define a custom attribute?
         //
         l-marker(

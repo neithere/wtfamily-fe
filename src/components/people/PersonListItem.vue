@@ -8,7 +8,9 @@ popper(
   div.popper
     .card-body
       h5.card-title
-        fa-icon(:icon="genderIcon") {{ person.name }}
+        fa-icon(:icon="genderIcon")
+        |
+        | {{ person.name }}
       h6.card-subtitle.text-muted
       |
       | {{ person.birth }} — {{ person.death }} (age ≈{{ person.age }})
