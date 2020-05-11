@@ -61,7 +61,10 @@ export default {
       }
 
       return Axios.get(objectURL).then(resp => {
-        this.objectList = [resp.data]
+        const item = resp.data
+
+        this.objectList = [item]
+        this.setDocumentTitle(item[this.titleAttr])
       })
     }
     let fetchAll = () => {
@@ -80,6 +83,7 @@ export default {
       if (this.selectedId === null) {
         return
       }
+
       return this.objectList.find(_ => _.id === this.selectedId)
     },
     mainPanelGridClass () {
@@ -92,6 +96,12 @@ export default {
   methods: {
     publishSelectedItem (item) {
       this.$emit('selected', item)
+      this.setDocumentTitle(item[this.titleAttr])
+    },
+    setDocumentTitle (value) {
+      if (value) {
+        document.title = value
+      }
     },
     matchesQuery (item) {
       var query = this.query || ''
