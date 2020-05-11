@@ -25,6 +25,9 @@ panel-viewer(
         :value="formatMultiNames(panel.selectedItem.names)"
       )
 
+      // can't extract to computed because `panel` is slot scope
+      term-list(:terms="panel.selectedItem.attributes.map(_ => ({ label: _.type, value: _.value }))")
+
       // <term label="Pub info" :value="panel.selectedItem.pubinfo" />
       // <term label="Abbrev" :value="panel.selectedItem.abbrev" />
       // <term label="Repo ID" :value="panel.selectedItem.repository" />
@@ -66,6 +69,7 @@ import Router from 'vue-router'
 
 import PanelViewer from '../common/PanelViewer'
 import Term from '../common/Term'
+import TermList from '../common/TermList'
 import DebugJson from '../common/DebugJson'
 import FamilyCard from './FamilyCard'
 import EventTable from '../events/EventTable'
@@ -120,6 +124,7 @@ export default {
     FamilyCard,
     EventTable,
     Term,
+    TermList,
     DebugJson
   }
 }

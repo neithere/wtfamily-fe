@@ -10,14 +10,30 @@ import router from './router'
 
 import { library as faLibrary } from '@fortawesome/fontawesome-svg-core'
 import {
+  faAward,
+  faBaby,
   faBook,
+  faBriefcase,
+  faCalendar,
   faChild,
-  faGlobe,
+  faChurch,
+  faCross,
+  faDna,
+  faHandHoldingUsd,
+  faHome,
   faFemale,
+  faFeatherAlt,
+  faGavel,
+  faGlobe,
+  faGraduationCap,
   faMale,
+  faMonument,
+  faShieldAlt,
   faStickyNote,
+  faUniversity,
   faUser,
-  faUsers
+  faUsers,
+  faWarehouse
 } from '@fortawesome/free-solid-svg-icons'
 import {
   faStickyNote as faStickyNoteRegular
@@ -25,15 +41,31 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 faLibrary.add(
+  faAward,
+  faBaby,
   faBook,
+  faBriefcase,
+  faCalendar,
   faChild,
+  faChurch,
+  faCross,
+  faDna,
+  faHandHoldingUsd,
+  faHome,
   faFemale,
+  faFeatherAlt,
+  faGavel,
   faGlobe,
+  faGraduationCap,
   faMale,
+  faMonument,
+  faShieldAlt,
   faStickyNote,
   faStickyNoteRegular,
+  faUniversity,
   faUser,
-  faUsers
+  faUsers,
+  faWarehouse
 )
 
 Vue.component('fa-icon', FontAwesomeIcon)

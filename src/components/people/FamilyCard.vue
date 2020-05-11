@@ -3,7 +3,9 @@
   .card-body
     h5.card-title
       debug-json(is-floating) {{ object }}
-      fa-icon(v-if="icon" :icon="icon") {{ header }}
+      fa-icon(v-if="icon" :icon="icon")
+      |
+      | {{ header }}
       // <span v-if="mentionPartners">({{ partnerNames }})</span>
     template(v-if="object")
       div(v-if="partnerIds && partnerIds.length")

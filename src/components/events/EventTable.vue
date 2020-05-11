@@ -63,7 +63,9 @@ div(v-if="object_list")
            :id="event.place_id"
            @loaded="addPlaceToMap"
          )
-        td(scope="col") {{ event.type }}
+        td(scope="col")
+          fa-icon(v-if="eventIcon(event.type)" :icon="eventIcon(event.type)" :title="event.type")
+          span(v-else) {{ event.type }}
         td(v-if="!noPeople" scope="col")
           person-list(
             inline
@@ -95,7 +97,27 @@ import PersonList from '../people/PersonList'
 import PlaceItem from '../places/PlaceItem'
 import CitationItem from '../sources/CitationItem'
 
+// FIXME: move to constants, also use in SourceViewer
 const MAP_FALLBACK_COORDS = { lat: 0, lng: 0 }
+
+const EVENT_TYPE_TO_ICON_NAME = {
+  Award: 'award',
+  Baptism: 'church',
+  Birth: 'baby',
+  Burial: 'monument',
+  Census: 'users',
+  Conviction: 'gavel',
+  Death: 'cross',
+  Degree: 'graduation-cap',
+  Education: 'university',
+  Graduation: 'graduation-cap',
+  'Military Service': 'shield-alt',
+  Occupation: 'briefcase',
+  Property: 'hand-holding-usd',
+  Residence: 'home',
+  Will: 'feather-alt',
+  Testament: 'feather-alt'
+}
 
 export default {
   props: {
@@ -208,6 +230,9 @@ export default {
         this.$set(this.places, place.id, place)
         this.$emit('added-place', place)
       }
+    },
+    eventIcon (eventType) {
+      return EVENT_TYPE_TO_ICON_NAME[eventType]
     }
   },
   watch: {
