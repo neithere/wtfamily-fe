@@ -7,17 +7,17 @@
       b-navbar-toggle(target="nav_collapse")
       b-collapse(is-nav visible id="nav_collapse")
         b-navbar-nav
-          b-nav-item(:to="{name: 'source.list'}")
+          b-nav-item(:to="{name: 'source.list'}" active-class="active")
             fa-icon(icon="book")
             |
             | Sources
 
-          b-nav-item(:to="{name: 'person.list'}")
+          b-nav-item(:to="{name: 'person.list'}" active-class="active")
             fa-icon(icon="users")
             |
             | People
 
-          b-nav-item(:to="{name: 'place.list'}")
+          b-nav-item(:to="{name: 'place.list'}" active-class="active")
             fa-icon(icon="globe")
             |
             | Places
