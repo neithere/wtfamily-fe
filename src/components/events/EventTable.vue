@@ -118,6 +118,7 @@ export default {
   data () {
     return {
       object_list: null,
+      hasError: null,
 
       // cache for places metadata fetched by one component and used by another
       places: {},
@@ -174,7 +175,10 @@ export default {
   methods: {
     fetchData () {
       this._fetchData()
-        .catch(err => console.error(err))
+        .catch(err => {
+          console.error('EventTable.fetchData:', err)
+          this.object_list = null
+        })
         .then(data => {
           this.places = {}
           this.object_list = data
@@ -196,7 +200,7 @@ export default {
       }
       */
 
-      throw Error('No specific URL could be generated')
+      return Promise.reject(Error('No specific URL could be generated'))
     },
     addPlaceToMap (place) {
       if (!this.places[place.id]) {
