@@ -1,5 +1,5 @@
 <template lang="pug">
-ul(:class="{'list-inline': inline}")
+ul.person-list(:class="{'list-inline': inline}")
   template(v-for="person in object_list")
     li(
       v-if="person.id !== excludePersonId"
@@ -54,4 +54,7 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.person-list
+  padding: 0
+  list-style: none
 </style>

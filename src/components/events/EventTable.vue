@@ -1,6 +1,6 @@
 <template lang="pug">
-div
-  .map-section(v-if="!placeId && placesWithCoords.length")
+div(v-if="object_list")
+  .map-section(v-if="!noMap && !placeId && placesWithCoords.length")
     l-map(
       ref="map"
       :zoom="mapZoom"
@@ -110,6 +110,7 @@ export default {
     noHeader: Boolean,
     noPlace: Boolean,
     noPeople: Boolean,
+    noMap: Boolean,
     noDescription: Boolean,
     noCitations: Boolean,
     showId: Boolean,
@@ -205,6 +206,7 @@ export default {
     addPlaceToMap (place) {
       if (!this.places[place.id]) {
         this.$set(this.places, place.id, place)
+        this.$emit('added-place', place)
       }
     }
   },

@@ -92,8 +92,6 @@ export default {
       selectedItem: null
     }
   },
-  computed: {
-  },
   methods: {
     selectItem (item) {
       // HACK: `item.id` would raise attribute error if `item` is undefined.

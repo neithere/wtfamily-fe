@@ -6,6 +6,8 @@ div
     :id="citation.id"
     :page="citation.page"
     :note-ids="citation.note_ids"
+    :no-map="noMap"
+    @added-place="$emit('added-place', $event)"
   )
 </template>
 
@@ -21,7 +23,8 @@ export default {
     sourceId: {
       type: String,
       required: true
-    }
+    },
+    noMap: Boolean
   },
   data () {
     return {

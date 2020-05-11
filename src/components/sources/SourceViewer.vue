@@ -10,12 +10,45 @@ panel-viewer(
       h2
         span.fas.fa-book {{ panel.selectedItem.title }}
       term-list(:terms="getTermsFor(panel)")
-      citation-list(:source-id="panel.selectedItem.id")
+
+      .map-section(v-if="placesWithCoords.length")
+        l-map(
+          ref="map"
+          :zoom="mapZoom"
+          :min-zoom="mapMinZoom"
+          :max-zoom="mapMaxZoom"
+          :bounds="mapBounds"
+          :padding="mapPadding"
+          style="width: 100%; height: 400px;"
+        )
+          l-control-scale(position="bottomright" :imperial="false")
+          l-tile-layer(
+            :name="mapTileLayerName"
+            :url="mapTileLayerURL"
+            :attribution="mapTileLayerAttribution"
+          )
+
+          template(v-for="(placeData, _placeId) in places")
+            l-marker(
+              v-if="placeData.coords"
+              :key="_placeId"
+              :lat-lng="placeData.coords"
+              :title="placeData.name"
+            )
+              l-popup.place-popup
+                strong {{ placeData.name }}
+
+      citation-list(
+        :source-id="panel.selectedItem.id"
+        no-map
+        @added-place="addPlaceToMap"
+      )
 </template>
 
 <script>
 import Vue from 'vue'
 import Router from 'vue-router'
+import { LControlScale, LMarker, LMap, LTileLayer, LPopup } from 'vue2-leaflet'
 
 import PanelViewer from '../common/PanelViewer'
 import TermList from '../common/TermList'
@@ -30,6 +63,9 @@ Vue.use(Router)
 
 const SOURCE_URL = 'http://localhost:5000/r/sources/'
 
+// FIXME: move to constants, also use in EventTable
+const MAP_FALLBACK_COORDS = { lat: 0, lng: 0 }
+
 export default {
   name: 'source-viewer',
   props: {
@@ -38,7 +74,26 @@ export default {
   data () {
     return {
       sourceUrl: SOURCE_URL,
-      selectedItem: null
+      selectedItem: null,
+      places: {},
+
+      // map
+      mapZoom: 7,
+      mapMinZoom: 4,
+      mapMaxZoom: 13,
+      mapPadding: [ 5, 5 ],
+      mapTileLayerName: 'OpenStreetMap',
+      mapTileLayerURL: 'http://{s}.tile.osm.org/{z}/{x}/{y}.png',
+      mapTileLayerAttribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }
+  },
+  computed: {
+    mapBounds () {
+      return this.placesWithCoords.map(_ => _.coords) ||
+        [MAP_FALLBACK_COORDS]
+    },
+    placesWithCoords () {
+      return Object.values(this.places || {}).filter(_ => _.coords)
     }
   },
   methods: {
@@ -47,6 +102,8 @@ export default {
         name: 'source.detail',
         params: { id: item.id }
       })
+
+      this.places = {}
     },
     getTermsFor (panel) {
       return [
@@ -55,9 +112,17 @@ export default {
         { value: panel.selectedItem.abbrev, label: 'Abbrev' },
         { value: panel.selectedItem.repository, label: 'Repo ID' }
       ]
+    },
+    addPlaceToMap (place) {
+      this.$set(this.places, place.id, place)
     }
   },
   components: {
+    LControlScale,
+    LMarker,
+    LMap,
+    LTileLayer,
+    LPopup,
     PanelViewer,
     CitationList,
     TermList

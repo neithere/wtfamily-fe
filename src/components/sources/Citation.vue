@@ -21,6 +21,8 @@
   event-table(
     :citation-id="id"
     no-header
+    :no-map="noMap"
+    @added-place="$emit('added-place', $event)"
   )
     .alert.alert-info(slot="no-data")
       strong Missing inferred facts.
@@ -39,7 +41,8 @@ export default {
       required: true
     },
     page: String,
-    noteIds: Array
+    noteIds: Array,
+    noMap: Boolean
   },
   components: {
     Note,
