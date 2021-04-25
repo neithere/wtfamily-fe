@@ -40,7 +40,7 @@ export default {
 
 <style lang="sass">
 // override Bootstrap's var with Ubuntu + orig value
-$font-family-sans-serif: Ubuntu, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default;
+$font-family-sans-serif: Ubuntu, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol" !default
 $primary: #666666  // use gray instead of bright blue for active items
 @import '~bootstrap/scss/bootstrap.scss'
 
@@ -52,7 +52,7 @@ $primary: #666666  // use gray instead of bright blue for active items
 
 /* FIXME this doesn't assign the font to the elem for some reason;
  * for now we are just using CDN, see index.html */
-// $fa-font-path: "~font-awesome/fonts";
+// $fa-font-path: "~font-awesome/fonts"
 // @import '~font-awesome/scss/font-awesome.scss'
 
 h1,
