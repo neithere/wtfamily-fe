@@ -1,6 +1,10 @@
 # WTFamily-FE
 
-> WTFamily Frontend
+Front-end for WTFamily written in Vue.js.
+
+WTFamily is a genealogical research software.
+
+See [WTFamily](https://github.com/neithere/wtfamily) for high-level overview and instructions.
 
 ## Project setup
 ```
