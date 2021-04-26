@@ -12,7 +12,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.12",
     "axios": "^0.21.1",
     "bootstrap-vue": "^2.21.2",
-    "pug": "^2.0.4",
+    "pug": "^3.0.1",
     "pug-plain-loader": "^1.0.0",
     "sass": "^1.32.11",
     "sass-loader": "9",
